@@ -12,8 +12,8 @@
 
 /* State machine states for peer or stream. */
 enum stream_state {
-	STATE_STREAMING,
-	STATE_PAUSED,
+  STATE_STREAMING,
+  STATE_PAUSED,
 };
 
 /**

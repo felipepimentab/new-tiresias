@@ -7,10 +7,10 @@
 #ifndef _AUDIO_DATAPATH_H_
 #define _AUDIO_DATAPATH_H_
 
-#include <zephyr/kernel.h>
-#include <stdint.h>
-#include <stdbool.h>
 #include <data_fifo.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <zephyr/kernel.h>
 
 #include "sw_codec_select.h"
 
@@ -49,9 +49,9 @@ void audio_datapath_pres_delay_us_get(uint32_t *delay_us);
 /**
  * @brief Input an audio data frame which is processed and outputted over I2S
  *
- * @note A frame of raw encoded audio data is inputted, and this data then is decoded
- *       and processed before being outputted over I2S. The audio is synchronized
- *       using sdu_ref_us
+ * @note A frame of raw encoded audio data is inputted, and this data then is
+ * decoded and processed before being outputted over I2S. The audio is
+ * synchronized using sdu_ref_us
  *
  * @param buf Pointer to audio data frame
  * @param size Size of audio data frame in bytes
@@ -59,8 +59,9 @@ void audio_datapath_pres_delay_us_get(uint32_t *delay_us);
  * @param bad_frame Indicating if the audio frame is bad or not
  * @param recv_frame_ts_us Timestamp of when audio frame was received
  */
-void audio_datapath_stream_out(const uint8_t *buf, size_t size, uint32_t sdu_ref_us, bool bad_frame,
-			       uint32_t recv_frame_ts_us);
+void audio_datapath_stream_out(const uint8_t *buf, size_t size,
+                               uint32_t sdu_ref_us, bool bad_frame,
+                               uint32_t recv_frame_ts_us);
 
 /**
  * @brief Start the audio datapath module
