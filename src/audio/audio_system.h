@@ -65,9 +65,7 @@ int audio_system_encode_test_tone_step(void);
  * @retval	-EINVAL	Invalid sample rate given.
  * @retval	0	On success.
  */
-int audio_system_config_set(uint32_t encoder_sample_rate_hz,
-                            uint32_t encoder_bitrate,
-                            uint32_t decoder_sample_rate_hz);
+int audio_system_config_set(uint32_t encoder_sample_rate_hz, uint32_t encoder_bitrate, uint32_t decoder_sample_rate_hz);
 
 /**
  * @brief	Decode data and then add it to TX FIFO buffer.
@@ -79,8 +77,7 @@ int audio_system_config_set(uint32_t encoder_sample_rate_hz,
  *
  * @return	0 on success, error otherwise.
  */
-int audio_system_decode(void const *const encoded_data,
-                        size_t encoded_data_size, bool bad_frame);
+int audio_system_decode(void const* const encoded_data, size_t encoded_data_size, bool bad_frame);
 
 /**
  * @brief	Initialize and start both HW and SW audio codec.
