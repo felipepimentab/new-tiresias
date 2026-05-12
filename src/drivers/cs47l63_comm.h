@@ -7,8 +7,8 @@
 #ifndef _CS47L63_COMM_H_
 #define _CS47L63_COMM_H_
 
-#include <stdint.h>
 #include "cs47l63.h"
+#include <stdint.h>
 
 /**@brief Initialize the CS47L63
  *
@@ -16,6 +16,6 @@
  *
  * @return 0 on success.
  */
-int cs47l63_comm_init(cs47l63_t *driver);
+int cs47l63_comm_init(cs47l63_t* driver);
 
 #endif /* _CS47L63_COMM_H_ */
