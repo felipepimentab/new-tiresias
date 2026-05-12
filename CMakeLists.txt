@@ -12,11 +12,6 @@ add_compile_definitions(GATEWAY=2)
 
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 
-# Test a configuration file option has been given
-if(NOT DEFINED EXTRA_CONF_FILE)
-    message(FATAL_ERROR "No configuration file specified, set -- -DEXTRA_CONF_FILE=<configuration file>")
-endif()
-
 project(new-tiresias)
 
 string(TIMESTAMP NRF5340_AUDIO_CORE_APP_COMP_DATE "%a %b %d %H:%M:%S %Y")
@@ -31,22 +26,7 @@ target_sources(app PRIVATE
     ${CMAKE_BINARY_DIR}/fw_info_app.c
     )
 
-if (CONFIG_BT_BAP_BROADCAST_SINK)
-	add_subdirectory(broadcast_sink)
-endif()
-
-if (CONFIG_BT_BAP_BROADCAST_SOURCE)
-	add_subdirectory(broadcast_source)
-endif()
-
-if (CONFIG_BT_BAP_UNICAST_CLIENT)
-	add_subdirectory(unicast_client)
-endif()
-
-if (CONFIG_BT_BAP_UNICAST_SERVER)
-	add_subdirectory(unicast_server)
-endif()
-
+target_sources(app PRIVATE src/main.c)
 
 # Include application events and configuration headers
 zephyr_library_include_directories(

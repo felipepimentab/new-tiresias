@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "nrf5340_audio_dk.h": "c",
+    "button_assignments.h": "c",
+    "led.h": "c"
+  }
+}
