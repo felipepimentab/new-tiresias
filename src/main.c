@@ -11,7 +11,7 @@
 
 #include "broadcast_sink.h"
 #include "zbus_common.h"
-#include "nrf5340_audio_dk.h"
+#include "tiresias_dk.h"
 #include "led.h"
 #include "button_assignments.h"
 #include "macros_common.h"
@@ -43,9 +43,6 @@ ZBUS_MSG_SUBSCRIBER_DEFINE(bt_mgmt_evt_sub);
 ZBUS_CHAN_DECLARE(button_chan);
 ZBUS_CHAN_DECLARE(le_audio_chan);
 ZBUS_CHAN_DECLARE(bt_mgmt_chan);
-ZBUS_CHAN_DECLARE(volume_chan);
-
-ZBUS_OBS_DECLARE(volume_evt_sub);
 
 static struct k_thread button_msg_sub_thread_data;
 static struct k_thread le_audio_msg_sub_thread_data;
@@ -471,12 +468,6 @@ static int zbus_link_producers_observers(void)
 		return ret;
 	}
 
-	ret = zbus_chan_add_obs(&volume_chan, &volume_evt_sub, ZBUS_ADD_OBS_TIMEOUT_MS);
-	if (ret) {
-		LOG_ERR("Failed to add add volume sub");
-		return ret;
-	}
-
 	ret = zbus_chan_add_obs(&bt_mgmt_chan, &bt_mgmt_evt_sub, ZBUS_ADD_OBS_TIMEOUT_MS);
 	if (ret) {
 		LOG_ERR("Failed to add bt_mgmt sub");
@@ -566,7 +557,7 @@ int main(void)
 
 	LOG_DBG("Main started");
 
-	ret = nrf5340_audio_dk_init();
+	ret = tiresias_dk_init();
 	ERR_CHK(ret);
 
 	ret = fw_info_app_print();

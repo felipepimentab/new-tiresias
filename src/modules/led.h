@@ -9,11 +9,15 @@
 
 #include <stdint.h>
 
+/* Tiresias DK exposes three monochrome LEDs as led0, led1 and led2. Keep the
+ * legacy Audio DK names so the application logic does not need board-specific
+ * conditionals.
+ */
 #define LED_APP_RGB	0
 #define LED_NET_RGB	1
 #define LED_APP_1_BLUE	2
-#define LED_APP_2_GREEN 3
-#define LED_APP_3_GREEN 4
+#define LED_APP_2_GREEN 1
+#define LED_APP_3_GREEN 2
 
 #define RED   0
 #define GREEN 1

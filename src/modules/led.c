@@ -11,6 +11,7 @@
 #include <zephyr/drivers/gpio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <zephyr/device.h>
 
 #include "macros_common.h"
@@ -45,6 +46,7 @@ struct user_config {
 struct led_unit_cfg {
 	uint8_t led_no;
 	enum led_type unit_type;
+	bool configured;
 	union {
 		const struct gpio_dt_spec *mono;
 		const struct gpio_dt_spec *color[NUM_COLORS_RGB];
@@ -55,6 +57,27 @@ struct led_unit_cfg {
 static uint8_t leds_num;
 static bool initialized;
 static struct led_unit_cfg led_units[LED_UNIT_MAX];
+
+static int led_unit_from_label(const char *label, uint32_t *led_unit)
+{
+	const char *unit_start = label;
+	char *end_ptr = NULL;
+
+	while (*unit_start != '\0' && !isdigit((unsigned char)*unit_start)) {
+		unit_start++;
+	}
+
+	if (*unit_start == '\0') {
+		return -ENXIO;
+	}
+
+	*led_unit = strtoul(unit_start, &end_ptr, BASE_10);
+	if (unit_start == end_ptr || *led_unit >= LED_UNIT_MAX) {
+		return -ENXIO;
+	}
+
+	return 0;
+}
 
 /**
  * @brief Configures fields for a RGB LED
@@ -68,6 +91,7 @@ static int configure_led_color(uint8_t led_unit, uint8_t led_color, uint8_t led)
 
 	led_units[led_unit].type.color[led_color] = &leds[led];
 	led_units[led_unit].unit_type = LED_COLOR;
+	led_units[led_unit].configured = true;
 
 	return gpio_pin_configure_dt(led_units[led_unit].type.color[led_color],
 				     GPIO_OUTPUT_INACTIVE);
@@ -85,6 +109,7 @@ static int config_led_monochrome(uint8_t led_unit, uint8_t led)
 
 	led_units[led_unit].type.mono = &leds[led];
 	led_units[led_unit].unit_type = LED_MONOCHROME;
+	led_units[led_unit].configured = true;
 
 	return gpio_pin_configure_dt(led_units[led_unit].type.mono, GPIO_OUTPUT_INACTIVE);
 }
@@ -97,11 +122,11 @@ static int led_device_tree_parse(void)
 	int ret;
 
 	for (uint8_t i = 0; i < leds_num; i++) {
-		char *end_ptr = NULL;
-		uint32_t led_unit = strtoul(led_labels[i], &end_ptr, BASE_10);
+		uint32_t led_unit;
 
-		if (led_labels[i] == end_ptr) {
-			LOG_ERR("No match for led unit. The dts is likely not properly formatted");
+		ret = led_unit_from_label(led_labels[i], &led_unit);
+		if (ret) {
+			LOG_ERR("No match for led unit in label %s", led_labels[i]);
 			return -ENXIO;
 		}
 
@@ -129,8 +154,10 @@ static int led_device_tree_parse(void)
 				return ret;
 			}
 		} else {
-			LOG_ERR("No color identifier for LED %d LED unit %d", i, led_unit);
-			return -ENODEV;
+			ret = config_led_monochrome(led_unit, i);
+			if (ret) {
+				return ret;
+			}
 		}
 	}
 	return 0;
@@ -142,6 +169,10 @@ static int led_device_tree_parse(void)
 static int led_set_int(uint8_t led_unit, enum led_color color)
 {
 	int ret;
+
+	if (led_unit >= LED_UNIT_MAX || !led_units[led_unit].configured) {
+		return -EINVAL;
+	}
 
 	if (led_units[led_unit].unit_type == LED_MONOCHROME) {
 		if (color) {

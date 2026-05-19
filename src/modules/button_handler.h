@@ -13,7 +13,7 @@
 struct btn_config {
 	const char *btn_name;
 	uint8_t btn_pin;
-	uint32_t btn_cfg_mask;
+	struct gpio_dt_spec btn_spec;
 };
 
 /** @brief Initialize button handler, with buttons defined in button_assignments.h.

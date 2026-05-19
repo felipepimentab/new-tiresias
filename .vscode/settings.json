@@ -5,6 +5,8 @@
     "led.h": "c",
     "adau_1787_ic_1_sigma_reg.h": "c",
     "stdbool.h": "c",
-    "sw_codec_select.h": "c"
+    "sw_codec_select.h": "c",
+    "hw_codec.h": "c",
+    "macros_common.h": "c"
   }
 }
