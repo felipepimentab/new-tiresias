@@ -13,7 +13,7 @@ static int leds_set(void)
 	int ret;
 
 	/* Blink LED2 to indicate that the application core is running. */
-	ret = led_blink(LED_APP_3_GREEN);
+	// ret = led_blink(LED_APP_3_GREEN); TODO: change LED api call to zbus message
 	if (ret) {
 		return ret;
 	}
@@ -24,12 +24,12 @@ static int leds_set(void)
 	channel_assignment_get(&channel);
 
 	if (channel == AUDIO_CH_L) {
-		ret = led_on(LED_APP_RGB);
+		// ret = led_on(LED_APP_RGB); TODO: change LED api call to zbus message
 	} else {
-		ret = led_on(LED_NET_RGB);
+		// ret = led_on(LED_NET_RGB); TODO: change LED api call to zbus message
 	}
 #elif (CONFIG_AUDIO_DEV == GATEWAY)
-	ret = led_on(LED_APP_RGB);
+	// ret = led_on(LED_APP_RGB); TODO: change LED api call to zbus message
 #endif /* (CONFIG_AUDIO_DEV == HEADSET) */
 
 	if (ret) {

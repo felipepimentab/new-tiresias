@@ -205,7 +205,7 @@ static void le_audio_msg_sub_thread(void)
 
 			audio_system_start();
 			stream_state_set(STATE_STREAMING);
-			ret = led_blink(LED_APP_1_BLUE);
+			// ret = led_blink(LED_APP_1_BLUE); TODO: change LED api call to zbus message
 			ERR_CHK(ret);
 
 			break;
@@ -220,7 +220,7 @@ static void le_audio_msg_sub_thread(void)
 
 			stream_state_set(STATE_PAUSED);
 			audio_system_stop();
-			ret = led_on(LED_APP_1_BLUE);
+			// ret = led_on(LED_APP_1_BLUE); TODO: change LED api call to zbus message
 			ERR_CHK(ret);
 
 			break;
@@ -262,7 +262,7 @@ static void le_audio_msg_sub_thread(void)
 			if (strm_state == STATE_STREAMING) {
 				stream_state_set(STATE_PAUSED);
 				audio_system_stop();
-				ret = led_on(LED_APP_1_BLUE);
+				// ret = led_on(LED_APP_1_BLUE); TODO: change LED api call to zbus message
 				ERR_CHK(ret);
 			}
 

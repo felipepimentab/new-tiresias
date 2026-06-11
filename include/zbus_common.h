@@ -25,6 +25,23 @@ struct button_msg {
 	enum button_action button_action;
 };
 
+/* === LED === */
+typedef enum board_led_t {
+  LED_1,
+  LED_2,
+  LED_3,
+} board_led_t;
+typedef enum led_cmd_t {
+  TURN_ON,
+  TURN_OFF,
+  TOGGLE,
+  BLINK,
+} led_cmd_t;
+typedef struct led_chan_msg_t {
+  enum board_led_t led;
+  enum led_cmd_t cmd;
+} led_chan_msg_t;
+
 enum le_audio_evt_type {
 	LE_AUDIO_EVT_CONFIG_RECEIVED = 1,
 	LE_AUDIO_EVT_PRES_DELAY_SET,

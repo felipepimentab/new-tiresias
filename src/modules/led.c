@@ -1,331 +1,138 @@
-/*
- * Copyright (c) 2018 Nordic Semiconductor ASA
+/**
+ * @file
+ * @brief LED peripheral module.
  *
- * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
+ * Implements LED control using a Zbus subscriber. A worker thread waits for
+ * messages on `led_chan` and handles commands (on/off/toggle/blink). GPIOs
+ * are configured during `init_led()` and the module maintains simple state
+ * to support blinking.
  */
 
 #include "led.h"
-
-#include <zephyr/kernel.h>
-#include <zephyr/devicetree.h>
-#include <zephyr/drivers/gpio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <zephyr/device.h>
-
 #include "macros_common.h"
-
+#include "zbus_common.h"
+#include <errno.h>
+#include <zephyr/drivers/gpio.h>
+#include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
-LOG_MODULE_REGISTER(led, CONFIG_MODULE_LED_LOG_LEVEL);
+#include <zephyr/sys/util.h>
+#include <zephyr/zbus/zbus.h>
 
-#define BLINK_FREQ_MS			    1000
-/* Maximum number of LED_UNITS. 1 RGB LED = 1 UNIT of 3 LEDS */
-#define LED_UNIT_MAX			    10
-#define NUM_COLORS_RGB			    3
-#define BASE_10				    10
-#define DT_LABEL_AND_COMMA(node_id)	    DT_PROP(node_id, label),
-#define GPIO_DT_SPEC_GET_AND_COMMA(node_id) GPIO_DT_SPEC_GET(node_id, gpios),
+LOG_MODULE_REGISTER(led, LOG_LEVEL_INF);
 
-/* The following arrays are populated compile time from the .dts*/
-static const char *const led_labels[] = {DT_FOREACH_CHILD(DT_PATH(leds), DT_LABEL_AND_COMMA)};
+#define LED1_NODE DT_ALIAS(led0)
+#define LED2_NODE DT_ALIAS(led1)
+#define LED3_NODE DT_ALIAS(led2)
+
+BUILD_ASSERT(DT_NODE_HAS_STATUS(LED1_NODE, okay), "led0 alias missing or disabled");
+BUILD_ASSERT(DT_NODE_HAS_STATUS(LED2_NODE, okay), "led1 alias missing or disabled");
+BUILD_ASSERT(DT_NODE_HAS_STATUS(LED3_NODE, okay), "led2 alias missing or disabled");
 
 static const struct gpio_dt_spec leds[] = {
-	DT_FOREACH_CHILD(DT_PATH(leds), GPIO_DT_SPEC_GET_AND_COMMA)};
-
-enum led_type {
-	LED_MONOCHROME,
-	LED_COLOR,
+  GPIO_DT_SPEC_GET(LED1_NODE, gpios),
+  GPIO_DT_SPEC_GET(LED2_NODE, gpios),
+  GPIO_DT_SPEC_GET(LED3_NODE, gpios),
 };
 
-struct user_config {
-	bool blink;
-	enum led_color color;
-};
+#define N_LEDS ARRAY_SIZE(leds)
+#define BLINK_FREQ_MS 500
+#define LED_SUB_Q_SIZE 3
 
-struct led_unit_cfg {
-	uint8_t led_no;
-	enum led_type unit_type;
-	bool configured;
-	union {
-		const struct gpio_dt_spec *mono;
-		const struct gpio_dt_spec *color[NUM_COLORS_RGB];
-	} type;
-	struct user_config user_cfg;
-};
+static uint32_t blinking_mask;
 
-static uint8_t leds_num;
-static bool initialized;
-static struct led_unit_cfg led_units[LED_UNIT_MAX];
-
-static int led_unit_from_label(const char *label, uint32_t *led_unit)
+static void blink_timer_handler(struct k_timer* timer)
 {
-	const char *unit_start = label;
-	char *end_ptr = NULL;
+  ARG_UNUSED(timer);
 
-	while (*unit_start != '\0' && !isdigit((unsigned char)*unit_start)) {
-		unit_start++;
-	}
+  for (int i = 0; i < N_LEDS; i++) {
+    if ((blinking_mask & BIT(i)) != 0) {
+      gpio_pin_toggle_dt(&leds[i]);
+    }
+  }
+}
+K_TIMER_DEFINE(blink_timer, blink_timer_handler, NULL);
 
-	if (*unit_start == '\0') {
-		return -ENXIO;
-	}
+ZBUS_SUBSCRIBER_DEFINE(led_sub, LED_SUB_Q_SIZE);
 
-	*led_unit = strtoul(unit_start, &end_ptr, BASE_10);
-	if (unit_start == end_ptr || *led_unit >= LED_UNIT_MAX) {
-		return -ENXIO;
-	}
+ZBUS_CHAN_DEFINE(led_chan, led_chan_msg_t, NULL, NULL, ZBUS_OBSERVERS(led_sub), ZBUS_MSG_INIT(0));
 
-	return 0;
+#define LED_THREAD_STACK_SIZE 1024
+#define LED_THREAD_PRIORITY 6
+
+static int handle_led_msg(led_chan_msg_t msg)
+{
+  int ret = 0;
+  int led_n = msg.led;
+
+  if (led_n < 0 || led_n >= N_LEDS) {
+    return -EINVAL;
+  }
+
+  switch (msg.cmd) {
+  case TURN_OFF:
+    blinking_mask &= ~BIT(led_n);
+    ret = gpio_pin_set_dt(&leds[led_n], GPIO_OUTPUT_INACTIVE);
+    ERR_CHK(ret);
+    if (blinking_mask == 0) {
+      k_timer_stop(&blink_timer);
+    }
+    break;
+
+  case TURN_ON:
+    blinking_mask &= ~BIT(led_n);
+    ret = gpio_pin_set_dt(&leds[led_n], GPIO_OUTPUT_ACTIVE);
+    ERR_CHK(ret);
+    if (blinking_mask == 0) {
+      k_timer_stop(&blink_timer);
+    }
+    break;
+
+  case BLINK:
+    blinking_mask |= BIT(led_n);
+    k_timer_start(&blink_timer, K_MSEC(BLINK_FREQ_MS), K_MSEC(BLINK_FREQ_MS));
+    break;
+
+  case TOGGLE:
+    ret = gpio_pin_toggle_dt(&leds[led_n]);
+    ERR_CHK(ret);
+    break;
+
+  default:
+    ret = -EINVAL;
+    break;
+  }
+  return ret;
 }
 
-/**
- * @brief Configures fields for a RGB LED
- */
-static int configure_led_color(uint8_t led_unit, uint8_t led_color, uint8_t led)
+static void led_thread(void)
 {
-	if (!device_is_ready(leds[led].port)) {
-		LOG_ERR("LED GPIO controller not ready");
-		return -ENODEV;
-	}
+  const struct zbus_channel* chan;
+  led_chan_msg_t msg;
+  int ret;
 
-	led_units[led_unit].type.color[led_color] = &leds[led];
-	led_units[led_unit].unit_type = LED_COLOR;
-	led_units[led_unit].configured = true;
+  while (1) {
+    ret = zbus_sub_wait_msg(&led_sub, &chan, &msg, K_FOREVER);
+    ERR_CHK(ret);
 
-	return gpio_pin_configure_dt(led_units[led_unit].type.color[led_color],
-				     GPIO_OUTPUT_INACTIVE);
+    ret = handle_led_msg(msg);
+    ERR_CHK(ret);
+  }
 }
 
-/**
- * @brief Configures fields for a monochrome LED
- */
-static int config_led_monochrome(uint8_t led_unit, uint8_t led)
-{
-	if (!device_is_ready(leds[led].port)) {
-		LOG_ERR("LED GPIO controller not ready");
-		return -ENODEV;
-	}
-
-	led_units[led_unit].type.mono = &leds[led];
-	led_units[led_unit].unit_type = LED_MONOCHROME;
-	led_units[led_unit].configured = true;
-
-	return gpio_pin_configure_dt(led_units[led_unit].type.mono, GPIO_OUTPUT_INACTIVE);
-}
-
-/**
- * @brief Parses the device tree for LED settings.
- */
-static int led_device_tree_parse(void)
-{
-	int ret;
-
-	for (uint8_t i = 0; i < leds_num; i++) {
-		uint32_t led_unit;
-
-		ret = led_unit_from_label(led_labels[i], &led_unit);
-		if (ret) {
-			LOG_ERR("No match for led unit in label %s", led_labels[i]);
-			return -ENXIO;
-		}
-
-		if (strstr(led_labels[i], "LED_RGB_RED")) {
-			ret = configure_led_color(led_unit, RED, i);
-			if (ret) {
-				return ret;
-			}
-
-		} else if (strstr(led_labels[i], "LED_RGB_GREEN")) {
-			ret = configure_led_color(led_unit, GRN, i);
-			if (ret) {
-				return ret;
-			}
-
-		} else if (strstr(led_labels[i], "LED_RGB_BLUE")) {
-			ret = configure_led_color(led_unit, BLU, i);
-			if (ret) {
-				return ret;
-			}
-
-		} else if (strstr(led_labels[i], "LED_MONO")) {
-			ret = config_led_monochrome(led_unit, i);
-			if (ret) {
-				return ret;
-			}
-		} else {
-			ret = config_led_monochrome(led_unit, i);
-			if (ret) {
-				return ret;
-			}
-		}
-	}
-	return 0;
-}
-
-/**
- * @brief Internal handling to set the status of a led unit
- */
-static int led_set_int(uint8_t led_unit, enum led_color color)
-{
-	int ret;
-
-	if (led_unit >= LED_UNIT_MAX || !led_units[led_unit].configured) {
-		return -EINVAL;
-	}
-
-	if (led_units[led_unit].unit_type == LED_MONOCHROME) {
-		if (color) {
-			ret = gpio_pin_set_dt(led_units[led_unit].type.mono, 1);
-			if (ret) {
-				return ret;
-			}
-		} else {
-			ret = gpio_pin_set_dt(led_units[led_unit].type.mono, 0);
-			if (ret) {
-				return ret;
-			}
-		}
-	} else {
-		for (uint8_t i = 0; i < NUM_COLORS_RGB; i++) {
-			if (color & BIT(i)) {
-				ret = gpio_pin_set_dt(led_units[led_unit].type.color[i], 1);
-				if (ret) {
-					return ret;
-				}
-			} else {
-				ret = gpio_pin_set_dt(led_units[led_unit].type.color[i], 0);
-				if (ret) {
-					return ret;
-				}
-			}
-		}
-	}
-
-	return 0;
-}
-
-static void led_blink_work_handler(struct k_work *work);
-
-K_WORK_DEFINE(led_blink_work, led_blink_work_handler);
-
-/**
- * @brief Submit a k_work on timer expiry.
- */
-void led_blink_timer_handler(struct k_timer *dummy)
-{
-	k_work_submit(&led_blink_work);
-}
-
-K_TIMER_DEFINE(led_blink_timer, led_blink_timer_handler, NULL);
-
-/**
- * @brief Periodically invoked by the timer to blink LEDs.
- */
-static void led_blink_work_handler(struct k_work *work)
-{
-	int ret;
-	static bool on_phase;
-
-	for (uint8_t i = 0; i < leds_num; i++) {
-		if (led_units[i].user_cfg.blink) {
-			if (on_phase) {
-				ret = led_set_int(i, led_units[i].user_cfg.color);
-				ERR_CHK(ret);
-			} else {
-				ret = led_set_int(i, LED_COLOR_OFF);
-				ERR_CHK(ret);
-			}
-		}
-	}
-
-	on_phase = !on_phase;
-}
-
-static int led_set(uint8_t led_unit, enum led_color color, bool blink)
-{
-	int ret;
-
-	if (!initialized) {
-		return -EPERM;
-	}
-
-	ret = led_set_int(led_unit, color);
-	if (ret) {
-		return ret;
-	}
-
-	led_units[led_unit].user_cfg.blink = blink;
-	led_units[led_unit].user_cfg.color = color;
-
-	return 0;
-}
-
-int led_on(uint8_t led_unit, ...)
-{
-	if (led_units[led_unit].unit_type == LED_MONOCHROME) {
-		return led_set(led_unit, LED_ON, LED_SOLID);
-	}
-
-	va_list args;
-
-	va_start(args, led_unit);
-	int color = va_arg(args, int);
-
-	va_end(args);
-
-	if (color <= 0 || color >= LED_COLOR_NUM) {
-		LOG_ERR("Invalid color code %d", color);
-		return -EINVAL;
-	}
-	return led_set(led_unit, color, LED_SOLID);
-}
-
-int led_blink(uint8_t led_unit, ...)
-{
-	if (led_units[led_unit].unit_type == LED_MONOCHROME) {
-		return led_set(led_unit, LED_ON, LED_BLINK);
-	}
-
-	va_list args;
-
-	va_start(args, led_unit);
-
-	int color = va_arg(args, int);
-
-	va_end(args);
-
-	if (color <= 0 || color >= LED_COLOR_NUM) {
-		LOG_ERR("Invalid color code %d", color);
-		return -EINVAL;
-	}
-
-	return led_set(led_unit, color, LED_BLINK);
-}
-
-int led_off(uint8_t led_unit)
-{
-	return led_set(led_unit, LED_COLOR_OFF, LED_SOLID);
-}
+K_THREAD_DEFINE(led_thread_id, LED_THREAD_STACK_SIZE, led_thread, NULL, NULL, NULL, LED_THREAD_PRIORITY, 0, 0);
 
 int led_init(void)
 {
-	int ret;
+  int ret = 0;
 
-	if (initialized) {
-		return -EPERM;
-	}
+  for (int i = 0; i < N_LEDS; i++) {
+    if (!gpio_is_ready_dt(&leds[i])) {
+      return -ENODEV;
+    }
 
-	__ASSERT(ARRAY_SIZE(leds) != 0, "No LEDs found in dts");
+    ret = gpio_pin_configure_dt(&leds[i], GPIO_OUTPUT_INACTIVE);
+    ERR_CHK(ret);
+  }
 
-	leds_num = ARRAY_SIZE(leds);
-
-	ret = led_device_tree_parse();
-	if (ret) {
-		return ret;
-	}
-
-	k_timer_start(&led_blink_timer, K_MSEC(BLINK_FREQ_MS / 2), K_MSEC(BLINK_FREQ_MS / 2));
-	initialized = true;
-	return 0;
+  return ret;
 }

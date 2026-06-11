@@ -90,6 +90,7 @@ LOG_MODULE_REGISTER(audio_datapath, CONFIG_AUDIO_DATAPATH_LOG_LEVEL);
 
 /* How often to print under-run warning */
 #define UNDERRUN_LOG_INTERVAL_BLKS 5000
+#define I2S_LOG_INTERVAL_BLKS 1000
 
 enum drift_comp_state {
   DRIFT_STATE_INIT, /* Waiting for data to be received */
@@ -352,9 +353,9 @@ static void pres_comp_state_set(enum pres_comp_state new_state)
   /* NOTE: The string below is used by the Nordic CI system */
   LOG_INF("Pres comp state: %s", pres_comp_state_names[new_state]);
   if (new_state == PRES_STATE_LOCKED) {
-    ret = led_on(LED_APP_2_GREEN);
+    // ret = led_on(LED_APP_2_GREEN); TODO: change LED api call to zbus message
   } else {
-    ret = led_off(LED_APP_2_GREEN);
+    // ret = led_off(LED_APP_2_GREEN); TODO: change LED api call to zbus message
   }
   ERR_CHK(ret);
 }
@@ -609,6 +610,33 @@ static void alt_buffer_free_both(void)
   alt.buf_1_in_use = false;
 }
 
+static void i2s_buf_log(const char* dir, const uint32_t* buf)
+{
+  uint32_t nonzero = 0;
+
+  if (buf == NULL) {
+    return;
+  }
+
+  for (uint32_t i = 0; i < I2S_SAMPLES_NUM; i++) {
+    if (buf[i] != 0) {
+      nonzero++;
+    }
+  }
+
+  LOG_INF("I2S %s first=0x%08x nonzero=%u/%u", dir, buf[0], nonzero, I2S_SAMPLES_NUM);
+  LOG_INF("I2S %s raw: %08x %08x %08x %08x %08x %08x %08x %08x", dir, buf[0], buf[1], buf[2], buf[3], buf[4],
+      buf[5], buf[6], buf[7]);
+#if CONFIG_AUDIO_BIT_DEPTH_16
+  LOG_INF("I2S %s dec: %d %d %d %d %d %d %d %d", dir, (int16_t)(buf[0] & 0xffff),
+      (int16_t)(buf[1] & 0xffff), (int16_t)(buf[2] & 0xffff), (int16_t)(buf[3] & 0xffff),
+      (int16_t)(buf[4] & 0xffff), (int16_t)(buf[5] & 0xffff), (int16_t)(buf[6] & 0xffff),
+      (int16_t)(buf[7] & 0xffff));
+#elif CONFIG_AUDIO_BIT_DEPTH_32
+  LOG_INF("I2S %s dec: %d %d %d %d", dir, (int32_t)buf[0], (int32_t)buf[2], (int32_t)buf[4], (int32_t)buf[6]);
+#endif
+}
+
 /*
  * This handler function is called every time I2S needs new buffers for
  * TX and RX data.
@@ -624,6 +652,8 @@ static void audio_datapath_i2s_blk_complete(
 {
   int ret;
   static bool underrun_condition;
+  static uint32_t i2s_log_counter;
+  bool log_this_block = ((i2s_log_counter++ % I2S_LOG_INTERVAL_BLKS) == 0);
 
   alt_buffer_free(tx_buf_released);
 
@@ -671,6 +701,10 @@ static void audio_datapath_i2s_blk_complete(
       if (tone_active) {
         tone_mix(tx_buf);
       }
+
+      if (log_this_block) {
+        i2s_buf_log("TX", (const uint32_t*)tx_buf);
+      }
     }
   }
 
@@ -712,6 +746,10 @@ static void audio_datapath_i2s_blk_complete(
     }
 
     ERR_CHK_MSG(ret, "RX failed to get block");
+  }
+
+  if (log_this_block) {
+    i2s_buf_log("RX", rx_buf_released);
   }
 
   /*** Data exchange ***/
