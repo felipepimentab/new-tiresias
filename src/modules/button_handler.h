@@ -7,18 +7,12 @@
 #ifndef _BUTTON_HANDLER_H_
 #define _BUTTON_HANDLER_H_
 
-#include <stdint.h>
+#include <stdbool.h>
 #include <zephyr/drivers/gpio.h>
 
-struct btn_config {
-	const char *btn_name;
-	uint8_t btn_pin;
-	struct gpio_dt_spec btn_spec;
-};
-
-/** @brief Initialize button handler, with buttons defined in button_assignments.h.
+/** @brief Initialize the button handler.
  *
- * @note This function may only be called once - there is no reinitialize.
+ * Configures the board button GPIOs and publishes button events on button_chan.
  *
  * @return 0 if successful.
  * @return -ENODEV	gpio driver not found
@@ -27,8 +21,8 @@ int button_handler_init(void);
 
 /** @brief Check button state.
  *
- * @param[in] button_pin Button pin
- * @param[out] button_pressed Button state. True if currently pressed, false otherwise
+ * @param[in] button_pin GPIO pin for the configured button.
+ * @param[out] button_pressed Button state. True if currently pressed, false otherwise.
  *
  * @return 0 if success, an error code otherwise.
  */

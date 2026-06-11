@@ -16,14 +16,13 @@
 
 /***** Messages for zbus ******/
 
-enum button_action {
-	BUTTON_PRESS = 1,
-};
-
-struct button_msg {
-	uint32_t button_pin;
-	enum button_action button_action;
-};
+/* === Button === */
+typedef enum btn_event_t {
+	BUTTON_1_PRESSED,
+} btn_event_t;
+typedef struct btn_chan_msg_t {
+	enum btn_event_t event;
+} btn_chan_msg_t;
 
 /* === LED === */
 typedef enum board_led_t {
