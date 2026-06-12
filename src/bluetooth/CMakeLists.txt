@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
 #
 
+target_sources(app PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/bluetooth.c)
+
 add_subdirectory(bt_management)
 add_subdirectory(bt_rendering_and_capture)
 add_subdirectory(bt_content_control)
