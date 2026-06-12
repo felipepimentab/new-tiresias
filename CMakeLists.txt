@@ -32,6 +32,7 @@ target_sources(app PRIVATE src/main.c)
 zephyr_library_include_directories(
     include
     src/audio
+    src/application
     src/bluetooth
     src/drivers
     src/modules
@@ -45,17 +46,9 @@ zephyr_library_include_directories(app PRIVATE
 
 # Application sources
 add_subdirectory(src/audio)
+add_subdirectory(src/application)
 add_subdirectory(src/bluetooth)
 add_subdirectory(src/drivers)
 add_subdirectory(src/modules)
 add_subdirectory(src/utils)
 add_subdirectory(src/SigmaStudioFiles)
-
-## Cirrus Logic
-if (CONFIG_HW_CODEC_CIRRUS_LOGIC)
-    if (ZEPHYR_CIRRUS_LOGIC_MODULE_DIR)
-        add_subdirectory(${ZEPHYR_CIRRUS_LOGIC_MODULE_DIR} cirrus_logic_bin_dir)
-    else()
-        message(FATAL_ERROR "Cirrus Logic/sdk-mcu-drivers repository not found\n")
-    endif()
-endif()
