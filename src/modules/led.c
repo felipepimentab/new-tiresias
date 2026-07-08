@@ -111,7 +111,10 @@ static void led_thread(void)
   int ret;
 
   while (1) {
-    ret = zbus_sub_wait_msg(&led_sub, &chan, &msg, K_FOREVER);
+    ret = zbus_sub_wait(&led_sub, &chan, K_FOREVER);
+    ERR_CHK(ret);
+
+    ret = zbus_chan_read(chan, &msg, ZBUS_READ_TIMEOUT_MS);
     ERR_CHK(ret);
 
     ret = handle_led_msg(msg);
