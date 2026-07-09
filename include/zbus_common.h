@@ -24,6 +24,65 @@ typedef struct btn_chan_msg_t {
 	enum btn_event_t event;
 } btn_chan_msg_t;
 
+/* === Controller === */
+typedef enum controller_event {
+	CONTROLLER_EVENT_INIT,
+} controller_event;
+
+typedef struct controller_event_chan_msg {
+	enum controller_event event;
+} controller_event_chan_msg;
+
+typedef enum controller_state {
+	CONTROLLER_STATE_OFF,
+	CONTROLLER_STATE_INITIALIZING,
+	CONTROLLER_STATE_STANDARD,
+	CONTROLLER_STATE_BROADCAST_STREAMING,
+	CONTROLLER_STATE_ERROR,
+} controller_state;
+
+/* === Bluetooth service === */
+typedef enum bt_cmd {
+	BT_CMD_INIT,
+} bt_cmd;
+
+typedef enum bt_state {
+	BT_STATE_OFF,
+	BT_STATE_INITIALIZING,
+	BT_STATE_READY,
+	BT_STATE_ERROR,
+} bt_state;
+
+typedef struct bt_cmd_chan_msg {
+	enum bt_cmd cmd;
+} bt_cmd_chan_msg;
+
+typedef struct bt_state_chan_msg {
+	enum bt_state state;
+} bt_state_chan_msg;
+
+/* === Audio control service === */
+typedef enum audio_cmd {
+	AUDIO_CMD_INIT,
+	AUDIO_CMD_CODEC_SWITCH,
+} audio_cmd;
+
+typedef enum audio_state {
+	AUDIO_STATE_OFF,
+	AUDIO_STATE_INITIALIZING,
+	AUDIO_STATE_STANDARD,
+	AUDIO_STATE_BROADCAST_STREAMING,
+	AUDIO_STATE_ERROR,
+} audio_state;
+
+typedef struct audio_cmd_chan_msg {
+	enum audio_cmd cmd;
+} audio_cmd_chan_msg;
+
+typedef struct audio_state_chan_msg {
+	enum audio_state state;
+} audio_state_chan_msg;
+
 /* === LED === */
 typedef enum board_led_t {
   LED_1,
