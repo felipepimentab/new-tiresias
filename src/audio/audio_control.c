@@ -22,7 +22,7 @@ LOG_MODULE_REGISTER(audio_control_module, LOG_LEVEL_INF);
 
 ZBUS_SUBSCRIBER_DEFINE(audio_control_sub, 8);
 
-ZBUS_CHAN_DECLARE(le_audio_chan);
+ZBUS_CHAN_DECLARE(le_audio_chan, led_chan);
 
 ZBUS_CHAN_DEFINE(audio_state_chan, audio_state_chan_msg, NULL, NULL, ZBUS_OBSERVERS_EMPTY,
 		 ZBUS_MSG_INIT(.state = AUDIO_STATE_OFF));
@@ -135,6 +135,18 @@ static int codec_switch_toggle(void)
 		MOD_NX2_1_STEREOSWSLEW_ADDR, codec_param_value,
 		stereo_switch_value_label(codec_param_value), codec_param_value);
 
+  struct led_chan_msg_t led_msg;
+  led_msg.led = LED_2;
+  if (codec_param_value == 0U) {
+    led_msg.cmd = TURN_ON;
+  } else {
+    led_msg.cmd = BLINK;
+  }
+  ret = zbus_chan_pub(&led_chan, &led_msg, K_MSEC(100));
+  if (ret) {
+    LOG_ERR("Failed to send LED command: %d", ret);
+  }
+    
 	return 0;
 }
 

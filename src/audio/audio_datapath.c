@@ -702,7 +702,7 @@ static void audio_datapath_i2s_blk_complete(
         tone_mix(tx_buf);
       }
 
-      if (log_this_block) {
+      if (IS_ENABLED(CONFIG_AUDIO_LOG_I2S_TX_BUFFERS) && log_this_block) {
         i2s_buf_log("TX", (const uint32_t*)tx_buf);
       }
     }
@@ -748,7 +748,7 @@ static void audio_datapath_i2s_blk_complete(
     ERR_CHK_MSG(ret, "RX failed to get block");
   }
 
-  if (log_this_block) {
+  if (IS_ENABLED(CONFIG_AUDIO_LOG_I2S_RX_BUFFERS) && log_this_block) {
     i2s_buf_log("RX", rx_buf_released);
   }
 

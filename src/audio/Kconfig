@@ -127,6 +127,18 @@ config AUDIO_SOURCE_I2S
 	bool "Use I2S as audio source"
 endchoice
 
+config AUDIO_LOG_I2S_TX_BUFFERS
+	bool "Log TX I2S buffers"
+	default y
+	help
+	  Log periodic dumps of the I2S TX buffers.
+
+config AUDIO_LOG_I2S_RX_BUFFERS
+	bool "Log RX I2S buffers"
+	default y
+	help
+	  Log periodic dumps of the I2S RX buffers.
+
 choice AUDIO_HEADSET_CHANNEL
 	prompt "Headset audio channel assignment"
 	default AUDIO_HEADSET_CHANNEL_RUNTIME
