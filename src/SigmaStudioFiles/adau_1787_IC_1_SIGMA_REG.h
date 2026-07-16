@@ -1,7 +1,7 @@
 /*
  * File:           C:\users\crossover\Desktop\exports\adau_1787_IC_1_SIGMA_REG.h
  *
- * Created:        Wednesday, June 10, 2026 3:09:05 PM
+ * Created:        Thursday, July 9, 2026 12:36:47 PM
  * Description:    adau_1787:IC 1-Sigma control register definitions.
  *
  * This software is distributed in the hope that it will be useful,
@@ -58,7 +58,7 @@
 /* SAI_CLK_PWR  - Registers (IC 1_Sigma) */
 #define REG_SAI_CLK_PWR_IC_1_Sigma_ADDR           0xC007
 #define REG_SAI_CLK_PWR_IC_1_Sigma_BYTE           1
-#define REG_SAI_CLK_PWR_IC_1_Sigma_VALUE          0x3
+#define REG_SAI_CLK_PWR_IC_1_Sigma_VALUE          0xC
 
 /* DSP_PWR  - Registers (IC 1_Sigma) */
 #define REG_DSP_PWR_IC_1_Sigma_ADDR               0xC008
@@ -453,7 +453,7 @@
 /* ASRCI_CTRL  - Registers (IC 1_Sigma) */
 #define REG_ASRCI_CTRL_IC_1_Sigma_ADDR            0xC059
 #define REG_ASRCI_CTRL_IC_1_Sigma_BYTE            1
-#define REG_ASRCI_CTRL_IC_1_Sigma_VALUE           0x2
+#define REG_ASRCI_CTRL_IC_1_Sigma_VALUE           0x12
 
 /* ASRCI_ROUTE01  - Registers (IC 1_Sigma) */
 #define REG_ASRCI_ROUTE01_IC_1_Sigma_ADDR         0xC05A
@@ -463,12 +463,12 @@
 /* ASRCI_ROUTE23  - Registers (IC 1_Sigma) */
 #define REG_ASRCI_ROUTE23_IC_1_Sigma_ADDR         0xC05B
 #define REG_ASRCI_ROUTE23_IC_1_Sigma_BYTE         1
-#define REG_ASRCI_ROUTE23_IC_1_Sigma_VALUE        0x0
+#define REG_ASRCI_ROUTE23_IC_1_Sigma_VALUE        0x10
 
 /* ASRCO_CTRL  - Registers (IC 1_Sigma) */
 #define REG_ASRCO_CTRL_IC_1_Sigma_ADDR            0xC05C
 #define REG_ASRCO_CTRL_IC_1_Sigma_BYTE            1
-#define REG_ASRCO_CTRL_IC_1_Sigma_VALUE           0x2
+#define REG_ASRCO_CTRL_IC_1_Sigma_VALUE           0x12
 
 /* ASRCO_ROUTE0  - Registers (IC 1_Sigma) */
 #define REG_ASRCO_ROUTE0_IC_1_Sigma_ADDR          0xC05D
@@ -903,7 +903,7 @@
 /* SPT1_CTRL1  - Registers (IC 1_Sigma) */
 #define REG_SPT1_CTRL1_IC_1_Sigma_ADDR            0xC0C7
 #define REG_SPT1_CTRL1_IC_1_Sigma_BYTE            1
-#define REG_SPT1_CTRL1_IC_1_Sigma_VALUE           0x0
+#define REG_SPT1_CTRL1_IC_1_Sigma_VALUE           0x10
 
 /* SPT1_CTRL2  - Registers (IC 1_Sigma) */
 #define REG_SPT1_CTRL2_IC_1_Sigma_ADDR            0xC0C8
@@ -913,12 +913,12 @@
 /* SPT1_ROUTE0  - Registers (IC 1_Sigma) */
 #define REG_SPT1_ROUTE0_IC_1_Sigma_ADDR           0xC0C9
 #define REG_SPT1_ROUTE0_IC_1_Sigma_BYTE           1
-#define REG_SPT1_ROUTE0_IC_1_Sigma_VALUE          0x10
+#define REG_SPT1_ROUTE0_IC_1_Sigma_VALUE          0x20
 
 /* SPT1_ROUTE1  - Registers (IC 1_Sigma) */
 #define REG_SPT1_ROUTE1_IC_1_Sigma_ADDR           0xC0CA
 #define REG_SPT1_ROUTE1_IC_1_Sigma_BYTE           1
-#define REG_SPT1_ROUTE1_IC_1_Sigma_VALUE          0x11
+#define REG_SPT1_ROUTE1_IC_1_Sigma_VALUE          0x21
 
 /* SPT1_ROUTE2  - Registers (IC 1_Sigma) */
 #define REG_SPT1_ROUTE2_IC_1_Sigma_ADDR           0xC0CB
@@ -1220,10 +1220,10 @@
 #define R6_DMIC7_EN_IC_1_Sigma_SHIFT              7
 
 /* SAI_CLK_PWR (IC 1_Sigma) */
-#define R7_SPT0_IN_EN_IC_1_Sigma                  0x1    /* 1b	[0] */
-#define R7_SPT0_OUT_EN_IC_1_Sigma                 0x1    /* 1b	[1] */
-#define R7_SPT1_IN_EN_IC_1_Sigma                  0x0    /* 0b	[2] */
-#define R7_SPT1_OUT_EN_IC_1_Sigma                 0x0    /* 0b	[3] */
+#define R7_SPT0_IN_EN_IC_1_Sigma                  0x0    /* 0b	[0] */
+#define R7_SPT0_OUT_EN_IC_1_Sigma                 0x0    /* 0b	[1] */
+#define R7_SPT1_IN_EN_IC_1_Sigma                  0x1    /* 1b	[2] */
+#define R7_SPT1_OUT_EN_IC_1_Sigma                 0x1    /* 1b	[3] */
 #define R7_DMIC_CLK0_EN_IC_1_Sigma                0x0    /* 0b	[4] */
 #define R7_DMIC_CLK1_EN_IC_1_Sigma                0x0    /* 0b	[5] */
 #define R7_PDM0_EN_IC_1_Sigma                     0x0    /* 0b	[6] */
@@ -1962,7 +1962,7 @@
 /* ASRCI_CTRL (IC 1_Sigma) */
 #define R86_ASRCI_OUT_FS_IC_1_Sigma               0x2    /* 010b	[2:0] */
 #define R86_ASRCI_LPM_II_IC_1_Sigma               0x0    /* 0b	[3] */
-#define R86_ASRCI_SOURCE_IC_1_Sigma               0x0    /* 0b	[4] */
+#define R86_ASRCI_SOURCE_IC_1_Sigma               0x1    /* 1b	[4] */
 #define R86_ASRCI_LPM_IC_1_Sigma                  0x0    /* 0b	[5] */
 #define R86_ASRCI_VFILT_IC_1_Sigma                0x0    /* 0b	[6] */
 #define R86_ASRCI_MORE_FILT_IC_1_Sigma            0x0    /* 0b	[7] */
@@ -1989,7 +1989,7 @@
 
 /* ASRCI_ROUTE23 (IC 1_Sigma) */
 #define R88_ASRCI2_ROUTE_IC_1_Sigma               0x0    /* 0000b	[3:0] */
-#define R88_ASRCI3_ROUTE_IC_1_Sigma               0x0    /* 0000b	[7:4] */
+#define R88_ASRCI3_ROUTE_IC_1_Sigma               0x1    /* 0001b	[7:4] */
 #define R88_ASRCI2_ROUTE_IC_1_Sigma_MASK          0xF
 #define R88_ASRCI2_ROUTE_IC_1_Sigma_SHIFT         0
 #define R88_ASRCI3_ROUTE_IC_1_Sigma_MASK          0xF0
@@ -1998,7 +1998,7 @@
 /* ASRCO_CTRL (IC 1_Sigma) */
 #define R89_ASRCO_IN_FS_IC_1_Sigma                0x2    /* 010b	[2:0] */
 #define R89_ASRCO_LPM_II_IC_1_Sigma               0x0    /* 0b	[3] */
-#define R89_ASRCO_SAI_SEL_IC_1_Sigma              0x0    /* 0b	[4] */
+#define R89_ASRCO_SAI_SEL_IC_1_Sigma              0x1    /* 1b	[4] */
 #define R89_ASRCO_LPM_IC_1_Sigma                  0x0    /* 0b	[5] */
 #define R89_ASRCO_VFILT_IC_1_Sigma                0x0    /* 0b	[6] */
 #define R89_ASRCO_MORE_FILT_IC_1_Sigma            0x0    /* 0b	[7] */
@@ -2961,7 +2961,7 @@
 /* SPT1_CTRL1 (IC 1_Sigma) */
 #define R176_SPT1_SAI_MODE_IC_1_Sigma             0x0    /* 0b	[0] */
 #define R176_SPT1_DATA_FORMAT_IC_1_Sigma          0x0    /* 000b	[3:1] */
-#define R176_SPT1_SLOT_WIDTH_IC_1_Sigma           0x0    /* 00b	[5:4] */
+#define R176_SPT1_SLOT_WIDTH_IC_1_Sigma           0x1    /* 01b	[5:4] */
 #define R176_SPT1_TRI_STATE_IC_1_Sigma            0x0    /* 0b	[6] */
 #define R176_SPT1_SAI_MODE_IC_1_Sigma_MASK        0x1
 #define R176_SPT1_SAI_MODE_IC_1_Sigma_SHIFT       0
@@ -2987,12 +2987,12 @@
 #define R177_SPT1_LRCLK_POL_IC_1_Sigma_SHIFT      7
 
 /* SPT1_ROUTE0 (IC 1_Sigma) */
-#define R178_SPT1_OUT_ROUTE0_IC_1_Sigma           0x10   /* 010000b	[5:0] */
+#define R178_SPT1_OUT_ROUTE0_IC_1_Sigma           0x20   /* 100000b	[5:0] */
 #define R178_SPT1_OUT_ROUTE0_IC_1_Sigma_MASK      0x3F
 #define R178_SPT1_OUT_ROUTE0_IC_1_Sigma_SHIFT     0
 
 /* SPT1_ROUTE1 (IC 1_Sigma) */
-#define R179_SPT1_OUT_ROUTE1_IC_1_Sigma           0x11   /* 010001b	[5:0] */
+#define R179_SPT1_OUT_ROUTE1_IC_1_Sigma           0x21   /* 100001b	[5:0] */
 #define R179_SPT1_OUT_ROUTE1_IC_1_Sigma_MASK      0x3F
 #define R179_SPT1_OUT_ROUTE1_IC_1_Sigma_SHIFT     0
 

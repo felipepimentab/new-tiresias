@@ -1,7 +1,7 @@
 /*
  * File:           C:\users\crossover\Desktop\exports\adau_1787_IC_1_SIGMA.h
  *
- * Created:        Wednesday, June 10, 2026 3:09:05 PM
+ * Created:        Thursday, July 9, 2026 12:36:47 PM
  * Description:    adau_1787:IC 1-Sigma program data.
  *
  * This software is distributed in the hope that it will be useful,
@@ -281,7 +281,7 @@ ADI_REG_TYPE R18_DMIC_PWR_IC_1_Sigma_Default[REG_DMIC_PWR_IC_1_Sigma_BYTE] = {
 
 /* Register Default - IC 1.SAI_CLK_PWR Register */
 ADI_REG_TYPE R19_SAI_CLK_PWR_IC_1_Sigma_Default[REG_SAI_CLK_PWR_IC_1_Sigma_BYTE] = {
-0x03
+0x0C
 };
 
 /* Register Default - IC 1.ASRC_PWR Register */
@@ -626,7 +626,7 @@ ADI_REG_TYPE R87_FINT_ROUTE7_IC_1_Sigma_Default[REG_FINT_ROUTE7_IC_1_Sigma_BYTE]
 
 /* Register Default - IC 1.ASRCI_CTRL Register */
 ADI_REG_TYPE R88_ASRCI_CTRL_IC_1_Sigma_Default[REG_ASRCI_CTRL_IC_1_Sigma_BYTE] = {
-0x02
+0x12
 };
 
 /* Register Default - IC 1.ASRCI_ROUTE01 Register */
@@ -636,12 +636,12 @@ ADI_REG_TYPE R89_ASRCI_ROUTE01_IC_1_Sigma_Default[REG_ASRCI_ROUTE01_IC_1_Sigma_B
 
 /* Register Default - IC 1.ASRCI_ROUTE23 Register */
 ADI_REG_TYPE R90_ASRCI_ROUTE23_IC_1_Sigma_Default[REG_ASRCI_ROUTE23_IC_1_Sigma_BYTE] = {
-0x00
+0x10
 };
 
 /* Register Default - IC 1.ASRCO_CTRL Register */
 ADI_REG_TYPE R91_ASRCO_CTRL_IC_1_Sigma_Default[REG_ASRCO_CTRL_IC_1_Sigma_BYTE] = {
-0x02
+0x12
 };
 
 /* Register Default - IC 1.ASRCO_ROUTE0 Register */
@@ -1075,7 +1075,7 @@ ADI_REG_TYPE R175_SPT0_ROUTE15_IC_1_Sigma_Default[REG_SPT0_ROUTE15_IC_1_Sigma_BY
 
 /* Register Default - IC 1.SPT1_CTRL1 Register */
 ADI_REG_TYPE R176_SPT1_CTRL1_IC_1_Sigma_Default[REG_SPT1_CTRL1_IC_1_Sigma_BYTE] = {
-0x00
+0x10
 };
 
 /* Register Default - IC 1.SPT1_CTRL2 Register */
@@ -1085,12 +1085,12 @@ ADI_REG_TYPE R177_SPT1_CTRL2_IC_1_Sigma_Default[REG_SPT1_CTRL2_IC_1_Sigma_BYTE] 
 
 /* Register Default - IC 1.SPT1_ROUTE0 Register */
 ADI_REG_TYPE R178_SPT1_ROUTE0_IC_1_Sigma_Default[REG_SPT1_ROUTE0_IC_1_Sigma_BYTE] = {
-0x10
+0x20
 };
 
 /* Register Default - IC 1.SPT1_ROUTE1 Register */
 ADI_REG_TYPE R179_SPT1_ROUTE1_IC_1_Sigma_Default[REG_SPT1_ROUTE1_IC_1_Sigma_BYTE] = {
-0x11
+0x21
 };
 
 /* Register Default - IC 1.SPT1_ROUTE2 Register */

@@ -219,7 +219,7 @@
             <Address>49159</Address>
             <AddrIncr>0</AddrIncr>
             <Size>1</Size>
-            <Data>0x03, </Data>
+            <Data>0x0C, </Data>
         </Register>
         <Register>
             <Name>IC 1.ASRC_PWR Register</Name>
@@ -702,7 +702,7 @@
             <Address>49241</Address>
             <AddrIncr>0</AddrIncr>
             <Size>1</Size>
-            <Data>0x02, </Data>
+            <Data>0x12, </Data>
         </Register>
         <Register>
             <Name>IC 1.ASRCI_ROUTE01 Register</Name>
@@ -716,14 +716,14 @@
             <Address>49243</Address>
             <AddrIncr>0</AddrIncr>
             <Size>1</Size>
-            <Data>0x00, </Data>
+            <Data>0x10, </Data>
         </Register>
         <Register>
             <Name>IC 1.ASRCO_CTRL Register</Name>
             <Address>49244</Address>
             <AddrIncr>0</AddrIncr>
             <Size>1</Size>
-            <Data>0x02, </Data>
+            <Data>0x12, </Data>
         </Register>
         <Register>
             <Name>IC 1.ASRCO_ROUTE0 Register</Name>
@@ -1318,7 +1318,7 @@
             <Address>49351</Address>
             <AddrIncr>0</AddrIncr>
             <Size>1</Size>
-            <Data>0x00, </Data>
+            <Data>0x10, </Data>
         </Register>
         <Register>
             <Name>IC 1.SPT1_CTRL2 Register</Name>
@@ -1332,14 +1332,14 @@
             <Address>49353</Address>
             <AddrIncr>0</AddrIncr>
             <Size>1</Size>
-            <Data>0x10, </Data>
+            <Data>0x20, </Data>
         </Register>
         <Register>
             <Name>IC 1.SPT1_ROUTE1 Register</Name>
             <Address>49354</Address>
             <AddrIncr>0</AddrIncr>
             <Size>1</Size>
-            <Data>0x11, </Data>
+            <Data>0x21, </Data>
         </Register>
         <Register>
             <Name>IC 1.SPT1_ROUTE2 Register</Name>

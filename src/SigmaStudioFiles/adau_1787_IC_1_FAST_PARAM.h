@@ -1,7 +1,7 @@
 /*
  * File:           C:\users\crossover\Desktop\exports\adau_1787_IC_1_FAST_PARAM.h
  *
- * Created:        Wednesday, June 10, 2026 3:09:05 PM
+ * Created:        Thursday, July 9, 2026 12:36:47 PM
  * Description:    adau_1787:IC 1-Fast parameter RAM definitions.
  *
  * This software is distributed in the hope that it will be useful,
