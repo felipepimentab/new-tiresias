@@ -30,12 +30,14 @@
 
 LOG_MODULE_REGISTER(tiresias_service, CONFIG_LOG_DEFAULT_LEVEL);
 
+BUILD_ASSERT(CODEC_PARAMETER_MAX_BYTE_COUNT <= UINT8_MAX, "Parameter length must fit the wire field");
+
 struct tiresias_request {
   uint8_t opcode;
   uint32_t transaction_id;
   uint8_t parameter_id;
-  uint8_t byte_offset;
-  uint8_t data[TIRESIAS_PARAMETER_CHUNK_SIZE];
+  uint8_t data_len;
+  uint8_t data[CODEC_PARAMETER_MAX_BYTE_COUNT];
   uint32_t session_id;
 };
 
@@ -63,7 +65,6 @@ static uint32_t active_session_id;
 static atomic_t control_state;
 static atomic_t last_transaction_id;
 static atomic_t last_parameter_id;
-static atomic_t last_byte_offset;
 static atomic_t last_result;
 static atomic_t last_set_persisted;
 static uint32_t status_revision;
@@ -106,7 +107,7 @@ static int encode_status(uint8_t data[TIRESIAS_STATUS_SIZE])
   sys_put_le32(status_revision, &data[4]);
   sys_put_le32((uint32_t)atomic_get(&last_transaction_id), &data[8]);
   data[12] = (uint8_t)atomic_get(&last_parameter_id);
-  data[13] = (uint8_t)atomic_get(&last_byte_offset);
+  data[13] = 0U;
   sys_put_le16(0U, &data[14]);
   k_mutex_unlock(&service_mutex);
 
@@ -137,13 +138,17 @@ static ssize_t write_request(struct bt_conn* conn, const struct bt_gatt_attr* at
     uint16_t offset, uint8_t flags)
 {
   const uint8_t* data = buf;
-  struct tiresias_request request;
+  struct tiresias_request request = { 0 };
+  const struct codec_parameter* parameter;
   bool ready;
 
   ARG_UNUSED(attr);
-  ARG_UNUSED(flags);
+  /* Never stage or execute ATT long writes: only a complete ordinary write is admitted. */
+  if (flags != 0U) {
+    return BT_GATT_ERR(BT_ATT_ERR_NOT_SUPPORTED);
+  }
 
-  if (offset != 0U || len != TIRESIAS_REQUEST_SIZE) {
+  if (offset != 0U || len < TIRESIAS_REQUEST_HEADER_SIZE || len > TIRESIAS_REQUEST_SIZE) {
     return BT_GATT_ERR(BT_ATT_ERR_INVALID_ATTRIBUTE_LEN);
   }
 
@@ -151,10 +156,22 @@ static ssize_t write_request(struct bt_conn* conn, const struct bt_gatt_attr* at
     return BT_GATT_ERR(BT_ATT_ERR_VALUE_NOT_ALLOWED);
   }
 
-  if (sys_get_le32(&data[2]) == 0U || data[6] == 0U
-      || (data[0] == TIRESIAS_OPCODE_GET_PARAMETER
-          && (data[8] != 0U || data[9] != 0U || data[10] != 0U || data[11] != 0U))) {
+  if (sys_get_le32(&data[2]) == 0U || data[6] == 0U) {
     return BT_GATT_ERR(BT_ATT_ERR_VALUE_NOT_ALLOWED);
+  }
+  if (len != TIRESIAS_REQUEST_HEADER_SIZE + data[7] || (data[0] == TIRESIAS_OPCODE_GET_PARAMETER && data[7] != 0U)) {
+    return BT_GATT_ERR(BT_ATT_ERR_INVALID_ATTRIBUTE_LEN);
+  }
+
+  parameter = codec_contract_find(data[6]);
+  if (parameter != NULL) {
+    if (data[0] == TIRESIAS_OPCODE_SET_PARAMETER && data[7] != parameter->byte_count) {
+      return BT_GATT_ERR(BT_ATT_ERR_INVALID_ATTRIBUTE_LEN);
+    }
+    /* Reject before committing if the complete result cannot fit one indication. */
+    if (bt_gatt_get_mtu(conn) < TIRESIAS_RESPONSE_HEADER_SIZE + parameter->byte_count + 3U) {
+      return BT_GATT_ERR(BT_ATT_ERR_INVALID_ATTRIBUTE_LEN);
+    }
   }
 
   if (!bt_gatt_is_subscribed(conn, &attr_tiresias_gatt[9], BT_GATT_CCC_INDICATE)) {
@@ -178,8 +195,8 @@ static ssize_t write_request(struct bt_conn* conn, const struct bt_gatt_attr* at
   request.opcode = data[0];
   request.transaction_id = sys_get_le32(&data[2]);
   request.parameter_id = data[6];
-  request.byte_offset = data[7];
-  memcpy(request.data, &data[8], sizeof(request.data));
+  request.data_len = data[7];
+  memcpy(request.data, &data[TIRESIAS_REQUEST_HEADER_SIZE], request.data_len);
 
   if (k_msgq_put(&request_queue, &request, K_NO_WAIT) != 0) {
     atomic_set(&request_phase, REQUEST_PHASE_IDLE);
@@ -283,11 +300,10 @@ static void process_request(const struct tiresias_request* request)
   struct bt_conn* conn;
   const struct codec_parameter* parameter = NULL;
   uint8_t parameter_value[CODEC_PARAMETER_MAX_BYTE_COUNT];
-  uint8_t response_data[TIRESIAS_PARAMETER_CHUNK_SIZE] = { 0 };
+  uint8_t response_len = 0U;
   uint32_t revision = codec_parameters_revision();
   bool setting = request->opcode == TIRESIAS_OPCODE_SET_PARAMETER;
   enum tiresias_result result;
-  size_t chunk_size;
   int ret;
 
   if (!session_is_active(request->session_id)) {
@@ -300,23 +316,17 @@ static void process_request(const struct tiresias_request* request)
     ret = -ENOENT;
     goto result;
   }
-  if (request->byte_offset >= parameter->byte_count) {
-    ret = -ERANGE;
-    goto result;
-  }
-
-  chunk_size = MIN(sizeof(response_data), parameter->byte_count - request->byte_offset);
-  ret = codec_parameters_get(request->parameter_id, parameter_value, parameter->byte_count, &revision);
-  if (ret != 0) {
-    goto result;
-  }
-
   if (setting) {
-    memcpy(&parameter_value[request->byte_offset], request->data, chunk_size);
-    ret = codec_parameters_set(request->parameter_id, parameter_value, parameter->byte_count, &revision);
-    memcpy(response_data, request->data, chunk_size);
+    /* SET is a whole-value operation; no old bytes are merged into the request. */
+    ret = codec_parameters_set(request->parameter_id, request->data, request->data_len, &revision);
+    if (ret == 0) {
+      memcpy(parameter_value, request->data, parameter->byte_count);
+    }
   } else {
-    memcpy(response_data, &parameter_value[request->byte_offset], chunk_size);
+    ret = codec_parameters_get(request->parameter_id, parameter_value, parameter->byte_count, &revision);
+  }
+  if (ret == 0) {
+    response_len = parameter->byte_count;
   }
 
 result:
@@ -325,7 +335,6 @@ result:
   k_mutex_lock(&service_mutex, K_FOREVER);
   atomic_set(&last_transaction_id, (atomic_val_t)request->transaction_id);
   atomic_set(&last_parameter_id, request->parameter_id);
-  atomic_set(&last_byte_offset, request->byte_offset);
   atomic_set(&last_result, result);
   if (setting) {
     atomic_set(&last_set_persisted, result == TIRESIAS_RESULT_OK);
@@ -337,9 +346,9 @@ result:
   response_wire[1] = result;
   sys_put_le32(request->transaction_id, &response_wire[2]);
   response_wire[6] = request->parameter_id;
-  response_wire[7] = request->byte_offset;
-  memcpy(&response_wire[8], response_data, sizeof(response_data));
-  sys_put_le32(revision, &response_wire[12]);
+  response_wire[7] = response_len;
+  sys_put_le32(revision, &response_wire[8]);
+  memcpy(&response_wire[TIRESIAS_RESPONSE_HEADER_SIZE], parameter_value, response_len);
 
   conn = get_control_connection();
   if (conn == NULL || !session_is_active(request->session_id)) {
@@ -354,7 +363,7 @@ result:
   response_indication.func = indication_complete;
   response_indication.destroy = indication_destroy;
   response_indication.data = response_wire;
-  response_indication.len = sizeof(response_wire);
+  response_indication.len = TIRESIAS_RESPONSE_HEADER_SIZE + response_len;
   atomic_set(&request_phase, REQUEST_PHASE_INDICATING);
   ret = bt_gatt_indicate(conn, &response_indication);
   if (ret != 0) {
