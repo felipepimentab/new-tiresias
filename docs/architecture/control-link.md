@@ -54,86 +54,112 @@ supports one incoming control/Broadcast Assistant ACL.
 
 ## Custom service
 
-The service UUID is `7b9a0001-6e4f-4b2d-a9c8-4f2e6f5d1000`. Characteristic UUIDs replace
-`0001` as listed below; `0003` is reserved after removal of the protocol-v1 catalog:
+Protocol v5 transfers one complete parameter per operation. It is incompatible
+with v4; update firmware and workstation together. The service UUID remains
+`7b9a0001-6e4f-4b2d-a9c8-4f2e6f5d1000`. Discovery uses this UUID, not the local
+name. Characteristic UUIDs use the same suffix; `0003` remains reserved.
 
-| Characteristic | Properties | Content |
-|---|---|---|
-| Protocol Information (`0002`) | Read | Protocol version, capabilities, limits, contract CRC, boot ID, revision |
-| Status (`0004`) | Read, Notify | Control state, persistence state, and last operation |
-| Request (`0005`) | Write | One correlated byte-offset operation |
-| Response (`0006`) | Indicate | Correlated opaque-byte result |
+| Characteristic | Access | Value |
+| --- | --- | --- |
+| Protocol Information (`0002`) | Read | 24 bytes |
+| Status (`0004`) | Read, notify | 16 bytes |
+| Request (`0005`) | Write with response | 8-byte header, then 0–180 bytes |
+| Response (`0006`) | Indicate | 12-byte header, then 0–180 bytes |
 
-Wire values have explicit widths and byte order; never expose native C structures. Major
-versions break compatibility, minor versions add compatible fields, and capabilities gate
-optional operations. A client reads Protocol Information before modifying state.
+Standard DIS identity fields remain optional and are read independently.
+Metadata integers are little-endian; parameter bytes have no transport-level
+numeric interpretation or byte order. Headers are explicitly encoded, never
+native C structures.
 
-All integers are little-endian. Wire layouts are fixed and encoded field by field:
+### Wire records
 
-| Value | Size | Layout |
-|---|---:|---|
-| Protocol Information | 24 | `u8 major, u8 minor, u16 length, u32 capabilities, u16 max_request, u16 max_response, u32 contract_crc, u32 boot_id, u32 revision` |
-| Request | 12 | `u8 opcode, u8 flags, u32 transaction_id, u8 parameter_id, u8 byte_offset, u8 data[4]` |
-| Response | 16 | `u8 opcode, u8 result, u32 transaction_id, u8 parameter_id, u8 byte_offset, u8 data[4], u32 revision` |
-| Status | 16 | `u8 state, u8 flags, u8 last_result, u8 reserved, u32 revision, u32 last_transaction_id, u8 last_parameter_id, u8 last_byte_offset, u16 reserved` |
+- Protocol Information: `<BBHIHHIII>` — major (5), minor (0), record size (24),
+  capabilities, maximum request size (188), maximum response size (192), contract
+  CRC32, boot ID, parameter revision.
+- Request header: `<BBIBB>` — opcode, flags (zero), nonzero transaction ID,
+  parameter ID, payload byte count. Payload immediately follows the header.
+- Response header: `<BBIBBI>` — opcode, result, transaction ID, parameter ID,
+  payload byte count, committed revision. Payload immediately follows the header.
+- Status: `<BBBBIIBBH>` — control state, flags, last result, reserved zero,
+  revision, last transaction ID, last parameter ID, reserved zero, reserved zero.
+  Byte 13, formerly the chunk offset, is reserved in v5.
 
-Protocol constants and result values are public in `tiresias_service.h`. Transaction ID zero,
-nonzero flags, and nonzero GET data are invalid. CCC, readiness, malformed-length, and busy
-failures are rejected at ATT admission; every accepted request completes with one indication
-using the same nonzero transaction ID while the session remains connected. Protocol v4 uses
-the single DSP contract fingerprint CRC32 `0x098986fa`.
+GET (opcode 1) has no request payload and returns the entire parameter snapshot.
+SET (opcode 2) must carry exactly the contract byte count and returns the entire
+confirmed value. A failed operation returns only the response header, with a
+zero payload count. Result codes retain their v4 values: OK, bad request, not
+found, read-only, out of range, busy, persistence failure, internal error, DSP
+failure. Admission failures are ATT errors, not application results.
 
-## Fixed DSP contract
+The fixed 15-entry contract and CRC32 `0x098986fa` are unchanged. IDs 3–10 each
+contain a writable 136-byte compressor LUT; ID 15 is a read-only 180-byte soft
+clip LUT. Names live in the workstation and DSP addresses remain in firmware.
 
-Firmware and workstation compile the same MVP contract. Its public fingerprint is the CRC32
-of the ordered four-byte entries `parameter_id, block_id, byte_count, flags`. Membership
-implies readable opaque bytes; the writable property is an opt-in flag. Names and GUI grouping
-live in the workstation contract, while DSP addresses remain private to firmware. Neither side
-assigns numerical meaning, byte order, ranges, or units to parameter contents.
+### MTU and framing
 
-The fixed parameters are ADC Select, Source Select, eight 136-byte compressor LUTs, three
-phase-compensation gains, Output Headroom Gain, and the 180-byte Soft Clip LUT. Selectors,
-compressor LUTs, and gains are writable byte arrays; the Soft Clip LUT remains read-only.
+A request and its successful response must each fit a single ordinary ATT
+operation. Required ATT MTU is `12 + parameter_byte_count + 3`: 19 for a four-byte
+value (the default MTU of 23 suffices), 151 for a compressor LUT, and 195 for the
+largest GET. Firmware is configured with a local L2CAP TX MTU of 498; the actual
+negotiated peer MTU still determines admission. MTU negotiation is handled by
+the BLE stack/central; the client does not split parameters to accommodate a
+smaller MTU. A peer must negotiate at least 195 to use the whole catalog.
 
-The client identifies a chunk with `(parameter_id, byte_offset)`. It reads four opaque bytes at
-each offset from zero through `byte_count - 1` to assemble a parameter. Each chunk receives its
-own transaction ID and correlated indication; revision must remain stable across the assembled read.
-Chunking belongs only to the BLE transport. Codec Parameters accepts and returns complete parameter
-values; Control Link translates between the transport chunk and that whole-value interface.
+Firmware rejects insufficient MTU before queueing or changing any value. It
+also rejects incomplete/oversized SETs, mismatched payload counts, nonzero
+attribute offsets, write commands, and ATT prepare/execute writes. Long-write
+fragments are deliberately not accumulated or applied. A central that attempts
+a long write on a small-MTU connection receives an ATT error without a commit.
+This avoids backend-dependent long-write assembly semantics.
 
-Normal requests use stable IDs. Control Link validates framing, readiness, size, and queue
-capacity. Codec Parameters treats each value as one opaque byte array and performs only access and
-whole-value size checks required for safe access.
+The workstation uses Bleak's explicit `response=True` write API. Its API accepts
+write-with-response values up to 512 bytes, but that API limit does not establish
+the negotiated MTU or server support for long writes.
+See [Bleak write documentation](https://bleak.readthedocs.io/en/latest/api/client.html#bleak.BleakClient.write_gatt_char).
 
-MVP constraints:
+### Atomicity and failure behavior
 
-- one outstanding parameter operation;
-- up to four opaque parameter bytes per correlated `GET_PARAMETER` or `SET_PARAMETER` request;
-- the workstation exposes writes for the fourteen fixed writable byte arrays; all 1,292 catalog bytes
-  are stored in separate fixed-size parameter buffers owned by Codec Values;
-- each parameter is persisted independently as raw bytes under its own stable-ID Zephyr
-  Settings key; a successful SET saves only the complete parameter that owns the changed bytes;
-- Codec Parameters coordinates loading and saving, while Codec Settings owns the Zephyr Settings
-  keys and Codec Values owns the RAM buffers;
-- startup copies defaults from the SigmaStudio parameter image and overlays independently stored
-  parameters. Missing entries retain their generated defaults;
-- the protocol revision is boot-local and is not persisted in flash;
-- parameter contents have no firmware or workstation interpretation;
-- no BLE raw RAM/register access, batch atomicity, or whole-profile replacement.
+The service copies the complete accepted request into a fixed single-entry
+queue. Its worker calls `codec_parameters_set()` exactly once, without merging
+any old bytes. In the Bluetooth-only configuration, that function saves the
+complete value under its parameter's Settings key, then updates the RAM mirror
+and advances the revision once. Identical values are successful no-ops.
+GET returns bytes and revision from one mutex-protected snapshot.
 
-Codec parameter I/O is outside the proof-of-concept parameter path. Reads use the parameter
-buffers and writes update flash and RAM without attempting codec access. Future hardware access
-will go through Codec Adapter, the common boundary directly above the ADAU1787 driver. The
-service advertises deferred DSP application until that adapter is implemented and validated.
+- Malformed or incomplete requests change nothing.
+- Disconnect before a queued request is processed discards the request.
+- Disconnect after processing starts may still permit a complete commit.
+- A persistence failure leaves the old RAM mirror and revision intact.
+- A lost indication after commit makes the outcome uncertain, not partial.
+  Reconnect and read the complete parameter before deciding whether to retry.
+- Each request requires a Response subscription, an authorized READY connection,
+  and the sole request slot. Firmware retains indication storage until the stack
+  releases it. Busy admission is an ATT insufficient-resources error.
 
-A device-provided dynamic catalog and a generator based on the SigmaStudio `.params` export
-are post-MVP improvements. Compatibility negotiation for a dynamic catalog can be designed if
-that direction is pursued; DSP addresses must remain off the BLE interface.
+The workstation requires matching transaction ID, opcode, parameter ID, exact
+value length, and (for SET) exact echoed bytes. ATT write acknowledgment alone
+never means successful persistence. The exchange has a deadline and no automatic
+SET retries. Status is a snapshot, not a durable transaction log.
 
-Future bulk transfers use a session ID, transaction ID, contract fingerprint, declared parameter set,
-offsets, total length, integrity value, credits, and fixed owned buffers. Disconnect,
-authorization loss, timeout, shutdown, or codec reset cancels the session with documented
-partial-application semantics.
+These guarantees cover communication-induced partial updates of each stored
+parameter. Physical flash fault/power-loss behavior remains that of the Settings
+NVS backend and has not been hardware-tested here. The optional ADAU1787 path
+still applies hardware before persistence: physical DSP failures or persistence
+failures following DSP application are not a transactional hardware guarantee.
+The current build disables that path. Deferred-DSP capability reporting is
+unchanged; it must be reconciled when hardware integration is validated.
+
+### Prescriptions
+
+The current prescription loader makes 11 atomic parameter SETs (eight LUTs and
+three gains, 1,100 bytes). It does not commit the prescription atomically. A
+failure can leave earlier complete parameters from the new prescription and
+later complete parameters from the old one. Retrying the whole prescription is
+idempotent for unchanged values, but requires restored communication.
+
+The firmware document `docs/architecture/prescription-transactions.md` evaluates
+an explicit begin/stage/commit protocol and durable A/B prescription records.
+That design is proposed, not implemented by v5.
 
 ## Firmware integration
 
