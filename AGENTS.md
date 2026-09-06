@@ -4,6 +4,9 @@
 Zephyr/NCS firmware for Tiresias DK.
 
 ## Agent Rules
+- Do not create or add tests in this repository, including host-side tests,
+  mocks, shims, or test harnesses. Use compile-only builds and the inspection
+  checks listed below for verification.
 - Compile-only builds are allowed to verify that code compiles without errors.
 - Never flash, program, recover, reset, or debug a device, and never run hardware tests.
 - Keep changes scoped to the requested files/behavior.
