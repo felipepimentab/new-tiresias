@@ -42,7 +42,7 @@
  * @ref codec_contract and is used to detect firmware/workstation
  * contract mismatches.
  */
-#define CODEC_CONTRACT_CRC32 0x098986FAU
+#define CODEC_CONTRACT_CRC32 0x7E8EB66CU
 
 /** Number of entries in @ref codec_contract. */
 #define CODEC_PARAMETER_COUNT 15U
