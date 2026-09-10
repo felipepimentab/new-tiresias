@@ -212,14 +212,14 @@
             <Address>49158</Address>
             <AddrIncr>0</AddrIncr>
             <Size>1</Size>
-            <Data>0x00, </Data>
+            <Data>0x03, </Data>
         </Register>
         <Register>
             <Name>IC 1.SAI_CLK_PWR Register</Name>
             <Address>49159</Address>
             <AddrIncr>0</AddrIncr>
             <Size>1</Size>
-            <Data>0x00, </Data>
+            <Data>0x10, </Data>
         </Register>
         <Register>
             <Name>IC 1.ASRC_PWR Register</Name>
@@ -401,7 +401,7 @@
             <Address>49196</Address>
             <AddrIncr>0</AddrIncr>
             <Size>1</Size>
-            <Data>0x09, </Data>
+            <Data>0x02, </Data>
         </Register>
         <Register>
             <Name>IC 1.DMIC_CTRL3 Register</Name>
@@ -1521,7 +1521,7 @@
             <Address>49156</Address>
             <AddrIncr>0</AddrIncr>
             <Size>1</Size>
-            <Data>0x11, </Data>
+            <Data>0x10, </Data>
         </Register>
         <Register>
             <Name>IC 1.DAC_VOL0</Name>

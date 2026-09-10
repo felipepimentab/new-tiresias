@@ -1,7 +1,7 @@
 /*
  * File:           C:\Users\colombari\Desktop\tiresias-vpu\adau_1787-export\adau_1787_IC_1_SIGMA_REG.h
  *
- * Created:        Thursday, September 10, 2026 5:06:20 PM
+ * Created:        Thursday, September 10, 2026 5:36:19 PM
  * Description:    adau_1787:IC 1-Sigma control register definitions.
  *
  * This software is distributed in the hope that it will be useful,
@@ -43,7 +43,7 @@
 /* ADC_DAC_HP_PWR  - Registers (IC 1_Sigma) */
 #define REG_ADC_DAC_HP_PWR_IC_1_Sigma_ADDR        0xC004
 #define REG_ADC_DAC_HP_PWR_IC_1_Sigma_BYTE        1
-#define REG_ADC_DAC_HP_PWR_IC_1_Sigma_VALUE       0x11
+#define REG_ADC_DAC_HP_PWR_IC_1_Sigma_VALUE       0x10
 
 /* PLL_MB_PGA_PWR  - Registers (IC 1_Sigma) */
 #define REG_PLL_MB_PGA_PWR_IC_1_Sigma_ADDR        0xC005
@@ -53,12 +53,12 @@
 /* DMIC_PWR  - Registers (IC 1_Sigma) */
 #define REG_DMIC_PWR_IC_1_Sigma_ADDR              0xC006
 #define REG_DMIC_PWR_IC_1_Sigma_BYTE              1
-#define REG_DMIC_PWR_IC_1_Sigma_VALUE             0x0
+#define REG_DMIC_PWR_IC_1_Sigma_VALUE             0x3
 
 /* SAI_CLK_PWR  - Registers (IC 1_Sigma) */
 #define REG_SAI_CLK_PWR_IC_1_Sigma_ADDR           0xC007
 #define REG_SAI_CLK_PWR_IC_1_Sigma_BYTE           1
-#define REG_SAI_CLK_PWR_IC_1_Sigma_VALUE          0x0
+#define REG_SAI_CLK_PWR_IC_1_Sigma_VALUE          0x10
 
 /* DSP_PWR  - Registers (IC 1_Sigma) */
 #define REG_DSP_PWR_IC_1_Sigma_ADDR               0xC008
@@ -228,7 +228,7 @@
 /* DMIC_CTRL2  - Registers (IC 1_Sigma) */
 #define REG_DMIC_CTRL2_IC_1_Sigma_ADDR            0xC02C
 #define REG_DMIC_CTRL2_IC_1_Sigma_BYTE            1
-#define REG_DMIC_CTRL2_IC_1_Sigma_VALUE           0x9
+#define REG_DMIC_CTRL2_IC_1_Sigma_VALUE           0x2
 
 /* DMIC_CTRL3  - Registers (IC 1_Sigma) */
 #define REG_DMIC_CTRL3_IC_1_Sigma_ADDR            0xC02D
@@ -1148,7 +1148,7 @@
 #define R3_REV_IC_1_Sigma_SHIFT                   0
 
 /* ADC_DAC_HP_PWR (IC 1_Sigma) */
-#define R4_ADC0_EN_IC_1_Sigma                     0x1    /* 1b	[0] */
+#define R4_ADC0_EN_IC_1_Sigma                     0x0    /* 0b	[0] */
 #define R4_ADC1_EN_IC_1_Sigma                     0x0    /* 0b	[1] */
 #define R4_ADC2_EN_IC_1_Sigma                     0x0    /* 0b	[2] */
 #define R4_ADC3_EN_IC_1_Sigma                     0x0    /* 0b	[3] */
@@ -1194,8 +1194,8 @@
 #define R5_PGA3_EN_IC_1_Sigma_SHIFT               7
 
 /* DMIC_PWR (IC 1_Sigma) */
-#define R6_DMIC0_EN_IC_1_Sigma                    0x0    /* 0b	[0] */
-#define R6_DMIC1_EN_IC_1_Sigma                    0x0    /* 0b	[1] */
+#define R6_DMIC0_EN_IC_1_Sigma                    0x1    /* 1b	[0] */
+#define R6_DMIC1_EN_IC_1_Sigma                    0x1    /* 1b	[1] */
 #define R6_DMIC2_EN_IC_1_Sigma                    0x0    /* 0b	[2] */
 #define R6_DMIC3_EN_IC_1_Sigma                    0x0    /* 0b	[3] */
 #define R6_DMIC4_EN_IC_1_Sigma                    0x0    /* 0b	[4] */
@@ -1224,7 +1224,7 @@
 #define R7_SPT0_OUT_EN_IC_1_Sigma                 0x0    /* 0b	[1] */
 #define R7_SPT1_IN_EN_IC_1_Sigma                  0x0    /* 0b	[2] */
 #define R7_SPT1_OUT_EN_IC_1_Sigma                 0x0    /* 0b	[3] */
-#define R7_DMIC_CLK0_EN_IC_1_Sigma                0x0    /* 0b	[4] */
+#define R7_DMIC_CLK0_EN_IC_1_Sigma                0x1    /* 1b	[4] */
 #define R7_DMIC_CLK1_EN_IC_1_Sigma                0x0    /* 0b	[5] */
 #define R7_PDM0_EN_IC_1_Sigma                     0x0    /* 0b	[6] */
 #define R7_PDM1_EN_IC_1_Sigma                     0x0    /* 0b	[7] */
@@ -1588,8 +1588,8 @@
 #define R40_DMIC_CLK1_RATE_IC_1_Sigma_SHIFT       4
 
 /* DMIC_CTRL2 (IC 1_Sigma) */
-#define R41_DMIC01_FS_IC_1_Sigma                  0x1    /* 001b	[2:0] */
-#define R41_DMIC01_HPF_EN_IC_1_Sigma              0x1    /* 1b	[3] */
+#define R41_DMIC01_FS_IC_1_Sigma                  0x2    /* 010b	[2:0] */
+#define R41_DMIC01_HPF_EN_IC_1_Sigma              0x0    /* 0b	[3] */
 #define R41_DMIC01_DEC_ORDER_IC_1_Sigma           0x0    /* 0b	[4] */
 #define R41_DMIC01_FCOMP_IC_1_Sigma               0x0    /* 0b	[5] */
 #define R41_DMIC01_EDGE_IC_1_Sigma                0x0    /* 0b	[6] */

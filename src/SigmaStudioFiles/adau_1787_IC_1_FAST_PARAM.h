@@ -1,7 +1,7 @@
 /*
  * File:           C:\Users\colombari\Desktop\tiresias-vpu\adau_1787-export\adau_1787_IC_1_FAST_PARAM.h
  *
- * Created:        Thursday, September 10, 2026 5:06:20 PM
+ * Created:        Thursday, September 10, 2026 5:36:19 PM
  * Description:    adau_1787:IC 1-Fast parameter RAM definitions.
  *
  * This software is distributed in the hope that it will be useful,

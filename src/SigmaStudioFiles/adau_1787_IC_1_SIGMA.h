@@ -1,7 +1,7 @@
 /*
  * File:           C:\Users\colombari\Desktop\tiresias-vpu\adau_1787-export\adau_1787_IC_1_SIGMA.h
  *
- * Created:        Thursday, September 10, 2026 5:06:20 PM
+ * Created:        Thursday, September 10, 2026 5:36:19 PM
  * Description:    adau_1787:IC 1-Sigma program data.
  *
  * This software is distributed in the hope that it will be useful,
@@ -186,12 +186,12 @@ ADI_REG_TYPE R17_DSP_PWR_IC_1_Sigma_Default[REG_DSP_PWR_IC_1_Sigma_BYTE] = {
 
 /* Register Default - IC 1.DMIC_PWR Register */
 ADI_REG_TYPE R18_DMIC_PWR_IC_1_Sigma_Default[REG_DMIC_PWR_IC_1_Sigma_BYTE] = {
-0x00
+0x03
 };
 
 /* Register Default - IC 1.SAI_CLK_PWR Register */
 ADI_REG_TYPE R19_SAI_CLK_PWR_IC_1_Sigma_Default[REG_SAI_CLK_PWR_IC_1_Sigma_BYTE] = {
-0x00
+0x10
 };
 
 /* Register Default - IC 1.ASRC_PWR Register */
@@ -321,7 +321,7 @@ ADI_REG_TYPE R44_DMIC_CTRL1_IC_1_Sigma_Default[REG_DMIC_CTRL1_IC_1_Sigma_BYTE] =
 
 /* Register Default - IC 1.DMIC_CTRL2 Register */
 ADI_REG_TYPE R45_DMIC_CTRL2_IC_1_Sigma_Default[REG_DMIC_CTRL2_IC_1_Sigma_BYTE] = {
-0x09
+0x02
 };
 
 /* Register Default - IC 1.DMIC_CTRL3 Register */
@@ -1120,7 +1120,7 @@ ADI_REG_TYPE R202_PDM_ROUTE1_IC_1_Sigma_Default[REG_PDM_ROUTE1_IC_1_Sigma_BYTE] 
 
 /* Register Default - IC 1.ADC_DAC_HP_PWR */
 ADI_REG_TYPE R205_ADC_DAC_HP_PWR_IC_1_Sigma_Default[REG_ADC_DAC_HP_PWR_IC_1_Sigma_BYTE] = {
-0x11
+0x10
 };
 
 /* Register Default - IC 1.DAC_VOL0 */
