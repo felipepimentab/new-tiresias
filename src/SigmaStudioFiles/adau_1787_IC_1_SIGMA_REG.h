@@ -1,7 +1,7 @@
 /*
- * File:           C:\users\crossover\Desktop\exports\adau_1787_IC_1_SIGMA_REG.h
+ * File:           C:\Users\colombari\Desktop\tiresias-vpu\adau_1787-export\adau_1787_IC_1_SIGMA_REG.h
  *
- * Created:        Thursday, August 13, 2026 2:03:29 PM
+ * Created:        Thursday, September 10, 2026 5:06:20 PM
  * Description:    adau_1787:IC 1-Sigma control register definitions.
  *
  * This software is distributed in the hope that it will be useful,
@@ -43,12 +43,12 @@
 /* ADC_DAC_HP_PWR  - Registers (IC 1_Sigma) */
 #define REG_ADC_DAC_HP_PWR_IC_1_Sigma_ADDR        0xC004
 #define REG_ADC_DAC_HP_PWR_IC_1_Sigma_BYTE        1
-#define REG_ADC_DAC_HP_PWR_IC_1_Sigma_VALUE       0x3F
+#define REG_ADC_DAC_HP_PWR_IC_1_Sigma_VALUE       0x11
 
 /* PLL_MB_PGA_PWR  - Registers (IC 1_Sigma) */
 #define REG_PLL_MB_PGA_PWR_IC_1_Sigma_ADDR        0xC005
 #define REG_PLL_MB_PGA_PWR_IC_1_Sigma_BYTE        1
-#define REG_PLL_MB_PGA_PWR_IC_1_Sigma_VALUE       0x3D
+#define REG_PLL_MB_PGA_PWR_IC_1_Sigma_VALUE       0x1
 
 /* DMIC_PWR  - Registers (IC 1_Sigma) */
 #define REG_DMIC_PWR_IC_1_Sigma_ADDR              0xC006
@@ -58,7 +58,7 @@
 /* SAI_CLK_PWR  - Registers (IC 1_Sigma) */
 #define REG_SAI_CLK_PWR_IC_1_Sigma_ADDR           0xC007
 #define REG_SAI_CLK_PWR_IC_1_Sigma_BYTE           1
-#define REG_SAI_CLK_PWR_IC_1_Sigma_VALUE          0xC
+#define REG_SAI_CLK_PWR_IC_1_Sigma_VALUE          0x0
 
 /* DSP_PWR  - Registers (IC 1_Sigma) */
 #define REG_DSP_PWR_IC_1_Sigma_ADDR               0xC008
@@ -68,7 +68,7 @@
 /* ASRC_PWR  - Registers (IC 1_Sigma) */
 #define REG_ASRC_PWR_IC_1_Sigma_ADDR              0xC009
 #define REG_ASRC_PWR_IC_1_Sigma_BYTE              1
-#define REG_ASRC_PWR_IC_1_Sigma_VALUE             0x33
+#define REG_ASRC_PWR_IC_1_Sigma_VALUE             0x0
 
 /* FINT_PWR  - Registers (IC 1_Sigma) */
 #define REG_FINT_PWR_IC_1_Sigma_ADDR              0xC00A
@@ -133,7 +133,7 @@
 /* ADC_CTRL3  - Registers (IC 1_Sigma) */
 #define REG_ADC_CTRL3_IC_1_Sigma_ADDR             0xC019
 #define REG_ADC_CTRL3_IC_1_Sigma_BYTE             1
-#define REG_ADC_CTRL3_IC_1_Sigma_VALUE            0x3
+#define REG_ADC_CTRL3_IC_1_Sigma_VALUE            0x0
 
 /* ADC_CTRL4  - Registers (IC 1_Sigma) */
 #define REG_ADC_CTRL4_IC_1_Sigma_ADDR             0xC01A
@@ -228,7 +228,7 @@
 /* DMIC_CTRL2  - Registers (IC 1_Sigma) */
 #define REG_DMIC_CTRL2_IC_1_Sigma_ADDR            0xC02C
 #define REG_DMIC_CTRL2_IC_1_Sigma_BYTE            1
-#define REG_DMIC_CTRL2_IC_1_Sigma_VALUE           0x1
+#define REG_DMIC_CTRL2_IC_1_Sigma_VALUE           0x9
 
 /* DMIC_CTRL3  - Registers (IC 1_Sigma) */
 #define REG_DMIC_CTRL3_IC_1_Sigma_ADDR            0xC02D
@@ -458,12 +458,12 @@
 /* ASRCI_ROUTE01  - Registers (IC 1_Sigma) */
 #define REG_ASRCI_ROUTE01_IC_1_Sigma_ADDR         0xC05A
 #define REG_ASRCI_ROUTE01_IC_1_Sigma_BYTE         1
-#define REG_ASRCI_ROUTE01_IC_1_Sigma_VALUE        0x10
+#define REG_ASRCI_ROUTE01_IC_1_Sigma_VALUE        0x0
 
 /* ASRCI_ROUTE23  - Registers (IC 1_Sigma) */
 #define REG_ASRCI_ROUTE23_IC_1_Sigma_ADDR         0xC05B
 #define REG_ASRCI_ROUTE23_IC_1_Sigma_BYTE         1
-#define REG_ASRCI_ROUTE23_IC_1_Sigma_VALUE        0x10
+#define REG_ASRCI_ROUTE23_IC_1_Sigma_VALUE        0x0
 
 /* ASRCO_CTRL  - Registers (IC 1_Sigma) */
 #define REG_ASRCO_CTRL_IC_1_Sigma_ADDR            0xC05C
@@ -473,12 +473,12 @@
 /* ASRCO_ROUTE0  - Registers (IC 1_Sigma) */
 #define REG_ASRCO_ROUTE0_IC_1_Sigma_ADDR          0xC05D
 #define REG_ASRCO_ROUTE0_IC_1_Sigma_BYTE          1
-#define REG_ASRCO_ROUTE0_IC_1_Sigma_VALUE         0x12
+#define REG_ASRCO_ROUTE0_IC_1_Sigma_VALUE         0x0
 
 /* ASRCO_ROUTE1  - Registers (IC 1_Sigma) */
 #define REG_ASRCO_ROUTE1_IC_1_Sigma_ADDR          0xC05E
 #define REG_ASRCO_ROUTE1_IC_1_Sigma_BYTE          1
-#define REG_ASRCO_ROUTE1_IC_1_Sigma_VALUE         0x13
+#define REG_ASRCO_ROUTE1_IC_1_Sigma_VALUE         0x0
 
 /* ASRCO_ROUTE2  - Registers (IC 1_Sigma) */
 #define REG_ASRCO_ROUTE2_IC_1_Sigma_ADDR          0xC05F
@@ -813,7 +813,7 @@
 /* SPT0_CTRL1  - Registers (IC 1_Sigma) */
 #define REG_SPT0_CTRL1_IC_1_Sigma_ADDR            0xC0B5
 #define REG_SPT0_CTRL1_IC_1_Sigma_BYTE            1
-#define REG_SPT0_CTRL1_IC_1_Sigma_VALUE           0x10
+#define REG_SPT0_CTRL1_IC_1_Sigma_VALUE           0x0
 
 /* SPT0_CTRL2  - Registers (IC 1_Sigma) */
 #define REG_SPT0_CTRL2_IC_1_Sigma_ADDR            0xC0B6
@@ -823,22 +823,22 @@
 /* SPT0_ROUTE0  - Registers (IC 1_Sigma) */
 #define REG_SPT0_ROUTE0_IC_1_Sigma_ADDR           0xC0B7
 #define REG_SPT0_ROUTE0_IC_1_Sigma_BYTE           1
-#define REG_SPT0_ROUTE0_IC_1_Sigma_VALUE          0x20
+#define REG_SPT0_ROUTE0_IC_1_Sigma_VALUE          0x10
 
 /* SPT0_ROUTE1  - Registers (IC 1_Sigma) */
 #define REG_SPT0_ROUTE1_IC_1_Sigma_ADDR           0xC0B8
 #define REG_SPT0_ROUTE1_IC_1_Sigma_BYTE           1
-#define REG_SPT0_ROUTE1_IC_1_Sigma_VALUE          0x21
+#define REG_SPT0_ROUTE1_IC_1_Sigma_VALUE          0x11
 
 /* SPT0_ROUTE2  - Registers (IC 1_Sigma) */
 #define REG_SPT0_ROUTE2_IC_1_Sigma_ADDR           0xC0B9
 #define REG_SPT0_ROUTE2_IC_1_Sigma_BYTE           1
-#define REG_SPT0_ROUTE2_IC_1_Sigma_VALUE          0x3E
+#define REG_SPT0_ROUTE2_IC_1_Sigma_VALUE          0x3F
 
 /* SPT0_ROUTE3  - Registers (IC 1_Sigma) */
 #define REG_SPT0_ROUTE3_IC_1_Sigma_ADDR           0xC0BA
 #define REG_SPT0_ROUTE3_IC_1_Sigma_BYTE           1
-#define REG_SPT0_ROUTE3_IC_1_Sigma_VALUE          0x3E
+#define REG_SPT0_ROUTE3_IC_1_Sigma_VALUE          0x3F
 
 /* SPT0_ROUTE4  - Registers (IC 1_Sigma) */
 #define REG_SPT0_ROUTE4_IC_1_Sigma_ADDR           0xC0BB
@@ -853,12 +853,12 @@
 /* SPT0_ROUTE6  - Registers (IC 1_Sigma) */
 #define REG_SPT0_ROUTE6_IC_1_Sigma_ADDR           0xC0BD
 #define REG_SPT0_ROUTE6_IC_1_Sigma_BYTE           1
-#define REG_SPT0_ROUTE6_IC_1_Sigma_VALUE          0x3E
+#define REG_SPT0_ROUTE6_IC_1_Sigma_VALUE          0x3F
 
 /* SPT0_ROUTE7  - Registers (IC 1_Sigma) */
 #define REG_SPT0_ROUTE7_IC_1_Sigma_ADDR           0xC0BE
 #define REG_SPT0_ROUTE7_IC_1_Sigma_BYTE           1
-#define REG_SPT0_ROUTE7_IC_1_Sigma_VALUE          0x3E
+#define REG_SPT0_ROUTE7_IC_1_Sigma_VALUE          0x3F
 
 /* SPT0_ROUTE8  - Registers (IC 1_Sigma) */
 #define REG_SPT0_ROUTE8_IC_1_Sigma_ADDR           0xC0BF
@@ -873,7 +873,7 @@
 /* SPT0_ROUTE10  - Registers (IC 1_Sigma) */
 #define REG_SPT0_ROUTE10_IC_1_Sigma_ADDR          0xC0C1
 #define REG_SPT0_ROUTE10_IC_1_Sigma_BYTE          1
-#define REG_SPT0_ROUTE10_IC_1_Sigma_VALUE         0x3E
+#define REG_SPT0_ROUTE10_IC_1_Sigma_VALUE         0x3F
 
 /* SPT0_ROUTE11  - Registers (IC 1_Sigma) */
 #define REG_SPT0_ROUTE11_IC_1_Sigma_ADDR          0xC0C2
@@ -903,7 +903,7 @@
 /* SPT1_CTRL1  - Registers (IC 1_Sigma) */
 #define REG_SPT1_CTRL1_IC_1_Sigma_ADDR            0xC0C7
 #define REG_SPT1_CTRL1_IC_1_Sigma_BYTE            1
-#define REG_SPT1_CTRL1_IC_1_Sigma_VALUE           0x10
+#define REG_SPT1_CTRL1_IC_1_Sigma_VALUE           0x0
 
 /* SPT1_CTRL2  - Registers (IC 1_Sigma) */
 #define REG_SPT1_CTRL2_IC_1_Sigma_ADDR            0xC0C8
@@ -913,22 +913,22 @@
 /* SPT1_ROUTE0  - Registers (IC 1_Sigma) */
 #define REG_SPT1_ROUTE0_IC_1_Sigma_ADDR           0xC0C9
 #define REG_SPT1_ROUTE0_IC_1_Sigma_BYTE           1
-#define REG_SPT1_ROUTE0_IC_1_Sigma_VALUE          0x20
+#define REG_SPT1_ROUTE0_IC_1_Sigma_VALUE          0x10
 
 /* SPT1_ROUTE1  - Registers (IC 1_Sigma) */
 #define REG_SPT1_ROUTE1_IC_1_Sigma_ADDR           0xC0CA
 #define REG_SPT1_ROUTE1_IC_1_Sigma_BYTE           1
-#define REG_SPT1_ROUTE1_IC_1_Sigma_VALUE          0x21
+#define REG_SPT1_ROUTE1_IC_1_Sigma_VALUE          0x11
 
 /* SPT1_ROUTE2  - Registers (IC 1_Sigma) */
 #define REG_SPT1_ROUTE2_IC_1_Sigma_ADDR           0xC0CB
 #define REG_SPT1_ROUTE2_IC_1_Sigma_BYTE           1
-#define REG_SPT1_ROUTE2_IC_1_Sigma_VALUE          0x3E
+#define REG_SPT1_ROUTE2_IC_1_Sigma_VALUE          0x3F
 
 /* SPT1_ROUTE3  - Registers (IC 1_Sigma) */
 #define REG_SPT1_ROUTE3_IC_1_Sigma_ADDR           0xC0CC
 #define REG_SPT1_ROUTE3_IC_1_Sigma_BYTE           1
-#define REG_SPT1_ROUTE3_IC_1_Sigma_VALUE          0x3E
+#define REG_SPT1_ROUTE3_IC_1_Sigma_VALUE          0x3F
 
 /* SPT1_ROUTE4  - Registers (IC 1_Sigma) */
 #define REG_SPT1_ROUTE4_IC_1_Sigma_ADDR           0xC0CD
@@ -948,7 +948,7 @@
 /* SPT1_ROUTE7  - Registers (IC 1_Sigma) */
 #define REG_SPT1_ROUTE7_IC_1_Sigma_ADDR           0xC0D0
 #define REG_SPT1_ROUTE7_IC_1_Sigma_BYTE           1
-#define REG_SPT1_ROUTE7_IC_1_Sigma_VALUE          0x3E
+#define REG_SPT1_ROUTE7_IC_1_Sigma_VALUE          0x3F
 
 /* SPT1_ROUTE8  - Registers (IC 1_Sigma) */
 #define REG_SPT1_ROUTE8_IC_1_Sigma_ADDR           0xC0D1
@@ -963,7 +963,7 @@
 /* SPT1_ROUTE10  - Registers (IC 1_Sigma) */
 #define REG_SPT1_ROUTE10_IC_1_Sigma_ADDR          0xC0D3
 #define REG_SPT1_ROUTE10_IC_1_Sigma_BYTE          1
-#define REG_SPT1_ROUTE10_IC_1_Sigma_VALUE         0x3E
+#define REG_SPT1_ROUTE10_IC_1_Sigma_VALUE         0x3F
 
 /* SPT1_ROUTE11  - Registers (IC 1_Sigma) */
 #define REG_SPT1_ROUTE11_IC_1_Sigma_ADDR          0xC0D4
@@ -1149,11 +1149,11 @@
 
 /* ADC_DAC_HP_PWR (IC 1_Sigma) */
 #define R4_ADC0_EN_IC_1_Sigma                     0x1    /* 1b	[0] */
-#define R4_ADC1_EN_IC_1_Sigma                     0x1    /* 1b	[1] */
-#define R4_ADC2_EN_IC_1_Sigma                     0x1    /* 1b	[2] */
-#define R4_ADC3_EN_IC_1_Sigma                     0x1    /* 1b	[3] */
+#define R4_ADC1_EN_IC_1_Sigma                     0x0    /* 0b	[1] */
+#define R4_ADC2_EN_IC_1_Sigma                     0x0    /* 0b	[2] */
+#define R4_ADC3_EN_IC_1_Sigma                     0x0    /* 0b	[3] */
 #define R4_PB0_EN_IC_1_Sigma                      0x1    /* 1b	[4] */
-#define R4_PB1_EN_IC_1_Sigma                      0x1    /* 1b	[5] */
+#define R4_PB1_EN_IC_1_Sigma                      0x0    /* 0b	[5] */
 #define R4_ADC0_EN_IC_1_Sigma_MASK                0x1
 #define R4_ADC0_EN_IC_1_Sigma_SHIFT               0
 #define R4_ADC1_EN_IC_1_Sigma_MASK                0x2
@@ -1170,10 +1170,10 @@
 /* PLL_MB_PGA_PWR (IC 1_Sigma) */
 #define R5_PLL_EN_IC_1_Sigma                      0x1    /* 1b	[0] */
 #define R5_XTAL_EN_IC_1_Sigma                     0x0    /* 0b	[1] */
-#define R5_MBIAS0_EN_IC_1_Sigma                   0x1    /* 1b	[2] */
-#define R5_MBIAS1_EN_IC_1_Sigma                   0x1    /* 1b	[3] */
-#define R5_PGA0_EN_IC_1_Sigma                     0x1    /* 1b	[4] */
-#define R5_PGA1_EN_IC_1_Sigma                     0x1    /* 1b	[5] */
+#define R5_MBIAS0_EN_IC_1_Sigma                   0x0    /* 0b	[2] */
+#define R5_MBIAS1_EN_IC_1_Sigma                   0x0    /* 0b	[3] */
+#define R5_PGA0_EN_IC_1_Sigma                     0x0    /* 0b	[4] */
+#define R5_PGA1_EN_IC_1_Sigma                     0x0    /* 0b	[5] */
 #define R5_PGA2_EN_IC_1_Sigma                     0x0    /* 0b	[6] */
 #define R5_PGA3_EN_IC_1_Sigma                     0x0    /* 0b	[7] */
 #define R5_PLL_EN_IC_1_Sigma_MASK                 0x1
@@ -1222,8 +1222,8 @@
 /* SAI_CLK_PWR (IC 1_Sigma) */
 #define R7_SPT0_IN_EN_IC_1_Sigma                  0x0    /* 0b	[0] */
 #define R7_SPT0_OUT_EN_IC_1_Sigma                 0x0    /* 0b	[1] */
-#define R7_SPT1_IN_EN_IC_1_Sigma                  0x1    /* 1b	[2] */
-#define R7_SPT1_OUT_EN_IC_1_Sigma                 0x1    /* 1b	[3] */
+#define R7_SPT1_IN_EN_IC_1_Sigma                  0x0    /* 0b	[2] */
+#define R7_SPT1_OUT_EN_IC_1_Sigma                 0x0    /* 0b	[3] */
 #define R7_DMIC_CLK0_EN_IC_1_Sigma                0x0    /* 0b	[4] */
 #define R7_DMIC_CLK1_EN_IC_1_Sigma                0x0    /* 0b	[5] */
 #define R7_PDM0_EN_IC_1_Sigma                     0x0    /* 0b	[6] */
@@ -1254,12 +1254,12 @@
 #define R8_SDSP_EN_IC_1_Sigma_SHIFT               4
 
 /* ASRC_PWR (IC 1_Sigma) */
-#define R9_ASRCI0_EN_IC_1_Sigma                   0x1    /* 1b	[0] */
-#define R9_ASRCI1_EN_IC_1_Sigma                   0x1    /* 1b	[1] */
+#define R9_ASRCI0_EN_IC_1_Sigma                   0x0    /* 0b	[0] */
+#define R9_ASRCI1_EN_IC_1_Sigma                   0x0    /* 0b	[1] */
 #define R9_ASRCI2_EN_IC_1_Sigma                   0x0    /* 0b	[2] */
 #define R9_ASRCI3_EN_IC_1_Sigma                   0x0    /* 0b	[3] */
-#define R9_ASRCO0_EN_IC_1_Sigma                   0x1    /* 1b	[4] */
-#define R9_ASRCO1_EN_IC_1_Sigma                   0x1    /* 1b	[5] */
+#define R9_ASRCO0_EN_IC_1_Sigma                   0x0    /* 0b	[4] */
+#define R9_ASRCO1_EN_IC_1_Sigma                   0x0    /* 0b	[5] */
 #define R9_ASRCO2_EN_IC_1_Sigma                   0x0    /* 0b	[6] */
 #define R9_ASRCO3_EN_IC_1_Sigma                   0x0    /* 0b	[7] */
 #define R9_ASRCI0_EN_IC_1_Sigma_MASK              0x1
@@ -1421,8 +1421,8 @@
 #define R21_ADC23_IBIAS_IC_1_Sigma_SHIFT          4
 
 /* ADC_CTRL3 (IC 1_Sigma) */
-#define R22_ADC0_HPF_EN_IC_1_Sigma                0x1    /* 1b	[0] */
-#define R22_ADC1_HPF_EN_IC_1_Sigma                0x1    /* 1b	[1] */
+#define R22_ADC0_HPF_EN_IC_1_Sigma                0x0    /* 0b	[0] */
+#define R22_ADC1_HPF_EN_IC_1_Sigma                0x0    /* 0b	[1] */
 #define R22_ADC2_HPF_EN_IC_1_Sigma                0x0    /* 0b	[2] */
 #define R22_ADC3_HPF_EN_IC_1_Sigma                0x0    /* 0b	[3] */
 #define R22_ADC0_HPF_EN_IC_1_Sigma_MASK           0x1
@@ -1589,7 +1589,7 @@
 
 /* DMIC_CTRL2 (IC 1_Sigma) */
 #define R41_DMIC01_FS_IC_1_Sigma                  0x1    /* 001b	[2:0] */
-#define R41_DMIC01_HPF_EN_IC_1_Sigma              0x0    /* 0b	[3] */
+#define R41_DMIC01_HPF_EN_IC_1_Sigma              0x1    /* 1b	[3] */
 #define R41_DMIC01_DEC_ORDER_IC_1_Sigma           0x0    /* 0b	[4] */
 #define R41_DMIC01_FCOMP_IC_1_Sigma               0x0    /* 0b	[5] */
 #define R41_DMIC01_EDGE_IC_1_Sigma                0x0    /* 0b	[6] */
@@ -1981,7 +1981,7 @@
 
 /* ASRCI_ROUTE01 (IC 1_Sigma) */
 #define R87_ASRCI0_ROUTE_IC_1_Sigma               0x0    /* 0000b	[3:0] */
-#define R87_ASRCI1_ROUTE_IC_1_Sigma               0x1    /* 0001b	[7:4] */
+#define R87_ASRCI1_ROUTE_IC_1_Sigma               0x0    /* 0000b	[7:4] */
 #define R87_ASRCI0_ROUTE_IC_1_Sigma_MASK          0xF
 #define R87_ASRCI0_ROUTE_IC_1_Sigma_SHIFT         0
 #define R87_ASRCI1_ROUTE_IC_1_Sigma_MASK          0xF0
@@ -1989,7 +1989,7 @@
 
 /* ASRCI_ROUTE23 (IC 1_Sigma) */
 #define R88_ASRCI2_ROUTE_IC_1_Sigma               0x0    /* 0000b	[3:0] */
-#define R88_ASRCI3_ROUTE_IC_1_Sigma               0x1    /* 0001b	[7:4] */
+#define R88_ASRCI3_ROUTE_IC_1_Sigma               0x0    /* 0000b	[7:4] */
 #define R88_ASRCI2_ROUTE_IC_1_Sigma_MASK          0xF
 #define R88_ASRCI2_ROUTE_IC_1_Sigma_SHIFT         0
 #define R88_ASRCI3_ROUTE_IC_1_Sigma_MASK          0xF0
@@ -2016,12 +2016,12 @@
 #define R89_ASRCO_MORE_FILT_IC_1_Sigma_SHIFT      7
 
 /* ASRCO_ROUTE0 (IC 1_Sigma) */
-#define R90_ASRCO0_ROUTE_IC_1_Sigma               0x12   /* 010010b	[5:0] */
+#define R90_ASRCO0_ROUTE_IC_1_Sigma               0x0    /* 000000b	[5:0] */
 #define R90_ASRCO0_ROUTE_IC_1_Sigma_MASK          0x3F
 #define R90_ASRCO0_ROUTE_IC_1_Sigma_SHIFT         0
 
 /* ASRCO_ROUTE1 (IC 1_Sigma) */
-#define R91_ASRCO1_ROUTE_IC_1_Sigma               0x13   /* 010011b	[5:0] */
+#define R91_ASRCO1_ROUTE_IC_1_Sigma               0x0    /* 000000b	[5:0] */
 #define R91_ASRCO1_ROUTE_IC_1_Sigma_MASK          0x3F
 #define R91_ASRCO1_ROUTE_IC_1_Sigma_SHIFT         0
 
@@ -2853,7 +2853,7 @@
 /* SPT0_CTRL1 (IC 1_Sigma) */
 #define R158_SPT0_SAI_MODE_IC_1_Sigma             0x0    /* 0b	[0] */
 #define R158_SPT0_DATA_FORMAT_IC_1_Sigma          0x0    /* 000b	[3:1] */
-#define R158_SPT0_SLOT_WIDTH_IC_1_Sigma           0x1    /* 01b	[5:4] */
+#define R158_SPT0_SLOT_WIDTH_IC_1_Sigma           0x0    /* 00b	[5:4] */
 #define R158_SPT0_TRI_STATE_IC_1_Sigma            0x0    /* 0b	[6] */
 #define R158_SPT0_SAI_MODE_IC_1_Sigma_MASK        0x1
 #define R158_SPT0_SAI_MODE_IC_1_Sigma_SHIFT       0
@@ -2879,12 +2879,12 @@
 #define R159_SPT0_LRCLK_POL_IC_1_Sigma_SHIFT      7
 
 /* SPT0_ROUTE0 (IC 1_Sigma) */
-#define R160_SPT0_OUT_ROUTE0_IC_1_Sigma           0x20   /* 100000b	[5:0] */
+#define R160_SPT0_OUT_ROUTE0_IC_1_Sigma           0x10   /* 010000b	[5:0] */
 #define R160_SPT0_OUT_ROUTE0_IC_1_Sigma_MASK      0x3F
 #define R160_SPT0_OUT_ROUTE0_IC_1_Sigma_SHIFT     0
 
 /* SPT0_ROUTE1 (IC 1_Sigma) */
-#define R161_SPT0_OUT_ROUTE1_IC_1_Sigma           0x21   /* 100001b	[5:0] */
+#define R161_SPT0_OUT_ROUTE1_IC_1_Sigma           0x11   /* 010001b	[5:0] */
 #define R161_SPT0_OUT_ROUTE1_IC_1_Sigma_MASK      0x3F
 #define R161_SPT0_OUT_ROUTE1_IC_1_Sigma_SHIFT     0
 
@@ -2961,7 +2961,7 @@
 /* SPT1_CTRL1 (IC 1_Sigma) */
 #define R176_SPT1_SAI_MODE_IC_1_Sigma             0x0    /* 0b	[0] */
 #define R176_SPT1_DATA_FORMAT_IC_1_Sigma          0x0    /* 000b	[3:1] */
-#define R176_SPT1_SLOT_WIDTH_IC_1_Sigma           0x1    /* 01b	[5:4] */
+#define R176_SPT1_SLOT_WIDTH_IC_1_Sigma           0x0    /* 00b	[5:4] */
 #define R176_SPT1_TRI_STATE_IC_1_Sigma            0x0    /* 0b	[6] */
 #define R176_SPT1_SAI_MODE_IC_1_Sigma_MASK        0x1
 #define R176_SPT1_SAI_MODE_IC_1_Sigma_SHIFT       0
@@ -2987,12 +2987,12 @@
 #define R177_SPT1_LRCLK_POL_IC_1_Sigma_SHIFT      7
 
 /* SPT1_ROUTE0 (IC 1_Sigma) */
-#define R178_SPT1_OUT_ROUTE0_IC_1_Sigma           0x20   /* 100000b	[5:0] */
+#define R178_SPT1_OUT_ROUTE0_IC_1_Sigma           0x10   /* 010000b	[5:0] */
 #define R178_SPT1_OUT_ROUTE0_IC_1_Sigma_MASK      0x3F
 #define R178_SPT1_OUT_ROUTE0_IC_1_Sigma_SHIFT     0
 
 /* SPT1_ROUTE1 (IC 1_Sigma) */
-#define R179_SPT1_OUT_ROUTE1_IC_1_Sigma           0x21   /* 100001b	[5:0] */
+#define R179_SPT1_OUT_ROUTE1_IC_1_Sigma           0x11   /* 010001b	[5:0] */
 #define R179_SPT1_OUT_ROUTE1_IC_1_Sigma_MASK      0x3F
 #define R179_SPT1_OUT_ROUTE1_IC_1_Sigma_SHIFT     0
 

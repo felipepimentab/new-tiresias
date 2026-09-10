@@ -94,7 +94,9 @@ int hw_codec_soft_reset(void);
 int hw_codec_init(void);
 
 /**
- * @brief Select the local microphone and DSP listening path.
+ * @brief Confirm the fixed VPU/DMIC and DSP listening path.
+ *
+ * @details The VPU SigmaStudio export contains no runtime source selector.
  *
  * @return 0 if successful, error otherwise
  */
@@ -103,7 +105,9 @@ int hw_codec_select_local(void);
 /**
  * @brief Select the I2S listening path.
  *
- * @return 0 if successful, error otherwise
+ * @details This path is unavailable in the VPU SigmaStudio export.
+ *
+ * @return -ENOTSUP for the fixed-path VPU image
  */
 int hw_codec_select_i2s(void);
 
