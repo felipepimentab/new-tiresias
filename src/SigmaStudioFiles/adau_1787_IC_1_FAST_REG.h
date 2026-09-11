@@ -1,7 +1,7 @@
 /*
  * File:           C:\Users\colombari\Desktop\tiresias-vpu\adau_1787-export\adau_1787_IC_1_FAST_REG.h
  *
- * Created:        Thursday, September 10, 2026 5:36:19 PM
+ * Created:        Thursday, September 10, 2026 7:20:31 PM
  * Description:    adau_1787:IC 1-Fast control register definitions.
  *
  * This software is distributed in the hope that it will be useful,
@@ -58,7 +58,7 @@
 /* SAI_CLK_PWR  - Registers (IC 1_Fast) */
 #define REG_SAI_CLK_PWR_IC_1_Fast_ADDR            0xC007
 #define REG_SAI_CLK_PWR_IC_1_Fast_BYTE            1
-#define REG_SAI_CLK_PWR_IC_1_Fast_VALUE           0x10
+#define REG_SAI_CLK_PWR_IC_1_Fast_VALUE           0x30
 
 /* DSP_PWR  - Registers (IC 1_Fast) */
 #define REG_DSP_PWR_IC_1_Fast_ADDR                0xC008
@@ -1225,7 +1225,7 @@
 #define R7_SPT1_IN_EN_IC_1_Fast                   0x0    /* 0b	[2] */
 #define R7_SPT1_OUT_EN_IC_1_Fast                  0x0    /* 0b	[3] */
 #define R7_DMIC_CLK0_EN_IC_1_Fast                 0x1    /* 1b	[4] */
-#define R7_DMIC_CLK1_EN_IC_1_Fast                 0x0    /* 0b	[5] */
+#define R7_DMIC_CLK1_EN_IC_1_Fast                 0x1    /* 1b	[5] */
 #define R7_PDM0_EN_IC_1_Fast                      0x0    /* 0b	[6] */
 #define R7_PDM1_EN_IC_1_Fast                      0x0    /* 0b	[7] */
 #define R7_SPT0_IN_EN_IC_1_Fast_MASK              0x1

@@ -1,7 +1,7 @@
 /*
  * File:           C:\Users\colombari\Desktop\tiresias-vpu\adau_1787-export\adau_1787_IC_1_SIGMA_PARAM.h
  *
- * Created:        Thursday, September 10, 2026 5:36:19 PM
+ * Created:        Thursday, September 10, 2026 7:20:31 PM
  * Description:    adau_1787:IC 1-Sigma parameter RAM definitions.
  *
  * This software is distributed in the hope that it will be useful,
@@ -46,5 +46,13 @@
 #define MOD_COEFFICIENTOFFSETLOCATIONSTART_COEFFICIENT_OFFSET_LOCATION_START_FIXPT 0x00002004
 #define MOD_COEFFICIENTOFFSETLOCATIONSTART_COEFFICIENT_OFFSET_LOCATION_START_VALUE SIGMASTUDIOTYPE_INTEGER_CONVERT(8196)
 #define MOD_COEFFICIENTOFFSETLOCATIONSTART_COEFFICIENT_OFFSET_LOCATION_START_TYPE SIGMASTUDIOTYPE_INTEGER
+
+/* Module Gain1 - Gain*/
+#define MOD_GAIN1_COUNT                                1
+#define MOD_GAIN1_DEVICE                               "IC1_Sigma"
+#define MOD_GAIN1_GAIN1940ALGNS1_ADDR                  8228
+#define MOD_GAIN1_GAIN1940ALGNS1_FIXPT                 0x07ECA9CD
+#define MOD_GAIN1_GAIN1940ALGNS1_VALUE                 SIGMASTUDIOTYPE_FIXPOINT_CONVERT(15.8489319246111)
+#define MOD_GAIN1_GAIN1940ALGNS1_TYPE                  SIGMASTUDIOTYPE_FIXPOINT
 
 #endif

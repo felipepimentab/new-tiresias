@@ -19,9 +19,19 @@
         <Schematic>
             <Algorithm name="ADAU1787DMICInAlg1" friendlyname="ADAU1787 DMIC Input " cell="DMIC IN1 " location="{X=285, Y=219} " Growth="8 " GrowthB="0 " FS="48000">
                 <Link pin="O_C0_A0_P1_out" dir="out" link="Link0" />
+                <Link pin="O_C0_A0_P2_out" dir="out" link="Link1" />
             </Algorithm>
-            <Algorithm name="ADAU1787SigmaOutAlg1" friendlyname="ADAU1787 SDSP OUT " cell="SDSP OUT1 " location="{X=547, Y=224} " Growth="0 " GrowthB="0">
-                <Link pin="I_C9_A0_P1_in" dir="in" link="Link0" />
+            <Algorithm name="AdderAlg1" friendlyname="Signal Mix " cell="Add1 " location="{X=374, Y=214} " Growth="2 " GrowthB="0">
+                <Link pin="I_C33_A0_P2_in" dir="in" link="Link0" />
+                <Link pin="I_C33_A0_P3_in" dir="in" link="Link1" />
+                <Link pin="O_C33_A0_P1_out" dir="out" link="Link2" />
+            </Algorithm>
+            <Algorithm name="Gain1940AlgNS1" friendlyname="Gain (no slew) " cell="Gain1 " location="{X=440, Y=206} " Growth="0 " GrowthB="0">
+                <Link pin="I_C41_A0_P1_in" dir="in" link="Link2" />
+                <Link pin="O_C41_A0_P2_out" dir="out" link="Link3" />
+            </Algorithm>
+            <Algorithm name="ADAU1787SigmaOutAlg1" friendlyname="ADAU1787 SDSP OUT " cell="SDSP OUT1 " location="{X=528, Y=221} " Growth="0 " GrowthB="0">
+                <Link pin="I_C9_A0_P1_in" dir="in" link="Link3" />
             </Algorithm>
         </Schematic>
     </IC>

@@ -1,7 +1,7 @@
 /*
  * File:           C:\Users\colombari\Desktop\tiresias-vpu\adau_1787-export\adau_1787_IC_1_SIGMA.h
  *
- * Created:        Thursday, September 10, 2026 5:36:19 PM
+ * Created:        Thursday, September 10, 2026 7:20:31 PM
  * Description:    adau_1787:IC 1-Sigma program data.
  *
  * This software is distributed in the hope that it will be useful,
@@ -26,7 +26,7 @@
 #define DEVICE_ADDR_IC_1_SIGMA                    0x50
 
 /* DSP Program Data */
-#define PROGRAM_SIZE_IC_1_Sigma 235
+#define PROGRAM_SIZE_IC_1_Sigma 275
 #define PROGRAM_ADDR_IC_1_Sigma 20480
 ADI_REG_TYPE Program_Data_IC_1_Sigma[PROGRAM_SIZE_IC_1_Sigma] = {
 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -68,7 +68,15 @@ ADI_REG_TYPE Program_Data_IC_1_Sigma[PROGRAM_SIZE_IC_1_Sigma] = {
 0xFF, 0xB0, 0x07, 0x02, 0x00, 
 0x80, 0x49, 0x08, 0x20, 0x00, 
 0x00, 0x10, 0x00, 0xE2, 0x00, 
+0x80, 0x59, 0x08, 0x20, 0x00, 
+0x00, 0x20, 0x00, 0xE2, 0x00, 
 0x00, 0x19, 0x08, 0x20, 0x00, 
+0x00, 0x29, 0x08, 0x22, 0x00, 
+0x00, 0x30, 0x00, 0xE2, 0x00, 
+0x00, 0x30, 0x09, 0x20, 0x00, 
+0x00, 0x40, 0x00, 0xE2, 0x00, 
+0x00, 0x00, 0x00, 0x00, 0x00, 
+0x00, 0x49, 0x08, 0x20, 0x00, 
 0x84, 0x80, 0x00, 0xE2, 0x00, 
 0x00, 0x00, 0x00, 0x00, 0x00, 
 0x90, 0x60, 0x00, 0x00, 0x00, 
@@ -79,7 +87,7 @@ ADI_REG_TYPE Program_Data_IC_1_Sigma[PROGRAM_SIZE_IC_1_Sigma] = {
 };
 
 /* DSP Parameter (Coefficient) Data */
-#define PARAM_SIZE_IC_1_Sigma 36
+#define PARAM_SIZE_IC_1_Sigma 40
 #define PARAM_ADDR_IC_1_Sigma 8192
 ADI_REG_TYPE Param_Data_IC_1_Sigma[PARAM_SIZE_IC_1_Sigma] = {
 0x00, 0x00, 0x08, 0x00, 
@@ -91,6 +99,7 @@ ADI_REG_TYPE Param_Data_IC_1_Sigma[PARAM_SIZE_IC_1_Sigma] = {
 0x00, 0x00, 0x00, 0x00, 
 0x00, 0x00, 0x00, 0x00, 
 0x00, 0x00, 0x20, 0x04, 
+0x07, 0xEC, 0xA9, 0xCD, 
 };
 
 
@@ -191,7 +200,7 @@ ADI_REG_TYPE R18_DMIC_PWR_IC_1_Sigma_Default[REG_DMIC_PWR_IC_1_Sigma_BYTE] = {
 
 /* Register Default - IC 1.SAI_CLK_PWR Register */
 ADI_REG_TYPE R19_SAI_CLK_PWR_IC_1_Sigma_Default[REG_SAI_CLK_PWR_IC_1_Sigma_BYTE] = {
-0x10
+0x30
 };
 
 /* Register Default - IC 1.ASRC_PWR Register */
